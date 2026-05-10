@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Инструкция и лендинг для генератора паспортов изделий из Excel и Word-шаблона." />
+  <title>Генератор паспортов изделий</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="В начало">
+      <span class="brand-mark"><span class="bolt">⚡</span></span>
+      <span>
+        <strong>Passport Generator</strong>
+        <small>Excel → Word</small>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="Основная навигация">
+      <a href="#install">Установка</a>
+      <a href="#usage">Использование</a>
+      <a href="#logic">Логика</a>
+      <a href="#files">Файлы</a>
+    </nav>
+    <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">
+      <span class="sun">☀</span><span class="moon">☾</span>
+    </button>
+  </header>
+
+  <div class="layout" id="top">
+    <aside class="sidebar" aria-label="Навигация по странице">
+      <div class="toc-card">
+        <div class="toc-title">Содержание</div>
+        <a href="#overview">Обзор</a>
+        <a href="#install-windows">Windows</a>
+        <a href="#install-macos">macOS</a>
+        <a href="#usage">Запуск</a>
+        <a href="#start-row">Стартовая строка</a>
+        <a href="#logic">Что куда подставляется</a>
+        <a href="#troubleshooting">Ошибки</a>
+      </div>
+      <div class="mini-card">
+        <span class="status-dot"></span>
+        <p>Работает локально: данные Excel не отправляются в интернет.</p>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero" id="overview">
+        <div class="hero-copy">
+          <div class="eyebrow">Автоматизация паспортов для электрических шкафов</div>
+          <h1>Генератор паспортов изделий из Excel и Word‑шаблона</h1>
+          <p class="lead">Заполните реестр изделий в Excel, укажите стартовую строку — скрипт создаст отдельный Word‑паспорт для каждого изделия и подставит номер заказа, тип изделия, заводской номер, IP, ток, напряжение, размер и вес.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="https://lnk.chop.kz/empr" target="_blank" rel="noopener noreferrer">Открыть папку OneDrive</a>
+            <a class="btn ghost" href="#usage">Перейти к запуску</a>
+          </div>
+        </div>
+        <div class="cabinet-wrap" aria-label="Анимированная схема электрического шкафа">
+          <div class="grid-glow"></div>
+          <svg class="cabinet" viewBox="0 0 420 340" role="img" aria-labelledby="cabinetTitle">
+            <title id="cabinetTitle">Схематичный электрический шкаф с индикаторами</title>
+            <defs>
+              <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="var(--svg-panel-a)"/>
+                <stop offset="100%" stop-color="var(--svg-panel-b)"/>
+              </linearGradient>
+            </defs>
+            <rect x="82" y="38" width="256" height="270" rx="26" fill="url(#panel)" stroke="var(--svg-stroke)" stroke-width="2"/>
+            <rect x="108" y="70" width="204" height="52" rx="12" fill="var(--svg-slot)"/>
+            <rect x="108" y="142" width="204" height="116" rx="14" fill="var(--svg-slot)"/>
+            <line class="wire wire-1" x1="130" y1="170" x2="290" y2="170"/>
+            <line class="wire wire-2" x1="130" y1="200" x2="290" y2="200"/>
+            <line class="wire wire-3" x1="130" y1="230" x2="290" y2="230"/>
+            <circle class="led led-a" cx="132" cy="96" r="7"/>
+            <circle class="led led-b" cx="160" cy="96" r="7"/>
+            <circle class="led led-c" cx="188" cy="96" r="7"/>
+            <path class="pulse" d="M70 302 C120 284, 158 310, 204 292 S294 282, 352 306" fill="none"/>
+            <text x="210" y="292" text-anchor="middle" class="svg-label">DOCX</text>
+          </svg>
+        </div>
+      </section>
+
+      <section class="section" id="install">
+        <div class="section-head">
+          <span class="kicker">Setup</span>
+          <h2>Установка Python и библиотек</h2>
+          <p>Действия выполняются один раз на компьютере, где будут генерироваться паспорта.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Выбор операционной системы">
+          <button class="tab active" data-tab="windows" type="button">Windows</button>
+          <button class="tab" data-tab="macos" type="button">macOS</button>
+        </div>
+
+        <div class="tab-panel active" id="install-windows" data-panel="windows">
+          <h3>Windows</h3>
+          <ol class="steps">
+            <li>Скачайте Python с официального сайта <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org/downloads</a>.</li>
+            <li>Запустите установщик и обязательно поставьте галочку <strong>Add python.exe to PATH</strong>.</li>
+            <li>Откройте PowerShell или Command Prompt и проверьте установку.</li>
+          </ol>
+          <div class="code-block">
+            <div class="code-head"><span>Проверить Python</span><button class="copy-btn" data-copy="py -3 --version" aria-label="Скопировать команду">Copy</button></div>
+            <pre><code>py -3 --version</code></pre>
+          </div>
+          <p>Установите библиотеки для работы с Word и Excel:</p>
+          <div class="code-block">
+            <div class="code-head"><span>Установить библиотеки</span><button class="copy-btn" data-copy="py -3 -m pip install python-docx openpyxl" aria-label="Скопировать команду">Copy</button></div>
+            <pre><code>py -3 -m pip install python-docx openpyxl</code></pre>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="install-macos" data-panel="macos">
+          <h3>macOS</h3>
+          <ol class="steps">
+            <li>Откройте Terminal: <strong>Cmd + Space → Terminal → Enter</strong>.</li>
+            <li>Проверьте, установлен ли Python.</li>
+          </ol>
+          <div class="code-block">
+            <div class="code-head"><span>Проверить Python</span><button class="copy-btn" data-copy="python3 --version" aria-label="Скопировать команду">Copy</button></div>
+            <pre><code>python3 --version</code></pre>
+          </div>
+          <p>Если Python не найден, скачайте установщик с <a href="https://www.python.org/downloads/macos/" target="_blank" rel="noopener noreferrer">python.org/downloads/macos</a>. Затем установите библиотеки:</p>
+          <div class="code-block">
+            <div class="code-head"><span>Установить библиотеки</span><button class="copy-btn" data-copy="python3 -m pip install python-docx openpyxl" aria-label="Скопировать команду">Copy</button></div>
+            <pre><code>python3 -m pip install python-docx openpyxl</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="usage">
+        <div class="section-head">
+          <span class="kicker">Workflow</span>
+          <h2>Как пользоваться генератором</h2>
+          <p>Скрипт рассчитан на папку с тремя основными файлами.</p>
+        </div>
+        <div class="folder-card">
+          <div class="folder-title">Структура папки</div>
+          <pre class="tree"><code>PassportGenerator/
+├─ generate_passports.py
+├─ passport_template_v2.docx
+├─ registry.xlsx
+└─ Gotovye_pasporta/    ← создаётся автоматически</code></pre>
+        </div>
+        <div class="notice">
+          <strong>Важно:</strong> перед запуском закройте <code>registry.xlsx</code> в Excel, чтобы Python мог прочитать файл без блокировки.
+        </div>
+
+        <h3>Запуск на Windows</h3>
+        <p>Откройте папку с файлами, нажмите правой кнопкой в пустом месте → <strong>Open in Terminal</strong>, затем выполните:</p>
+        <div class="code-block">
+          <div class="code-head"><span>Запустить генератор</span><button class="copy-btn" data-copy="py -3 generate_passports.py" aria-label="Скопировать команду">Copy</button></div>
+          <pre><code>py -3 generate_passports.py</code></pre>
+        </div>
+
+        <h3>Запуск на macOS</h3>
+        <p>Откройте Terminal, перейдите в папку и запустите скрипт:</p>
+        <div class="code-block">
+          <div class="code-head"><span>Перейти в папку</span><button class="copy-btn" data-copy="cd ~/Desktop/test" aria-label="Скопировать команду">Copy</button></div>
+          <pre><code>cd ~/Desktop/test</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-head"><span>Запустить генератор</span><button class="copy-btn" data-copy="python3 generate_passports.py" aria-label="Скопировать команду">Copy</button></div>
+          <pre><code>python3 generate_passports.py</code></pre>
+        </div>
+      </section>
+
+      <section class="section" id="start-row">
+        <div class="section-head">
+          <span class="kicker">Start row</span>
+          <h2>Выбор строки, с которой начинать</h2>
+          <p>Так как Excel постоянно пополняется, генератор не обязан каждый раз создавать паспорта по всей таблице.</p>
+        </div>
+        <p>При запуске скрипт спросит:</p>
+        <div class="terminal-demo">
+          <span class="prompt">Start Excel row for generation [press Enter for 3]:</span>
+          <span class="cursor"></span>
+        </div>
+        <div class="two-col">
+          <div class="info-card">
+            <h3>Нажать Enter</h3>
+            <p>Генерация начнётся с первой строки с данными.</p>
+          </div>
+          <div class="info-card">
+            <h3>Ввести 20</h3>
+            <p>Генерация начнётся с 20-й строки Excel и продолжится до конца таблицы.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="logic">
+        <div class="section-head">
+          <span class="kicker">Mapping</span>
+          <h2>Логика работы скрипта</h2>
+          <p>Скрипт читает значения из колонок Excel и заменяет метки в Word-шаблоне.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Колонка Excel</th><th>Метка Word</th><th>Пример результата</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Номер заказа</td><td><code>{{ORDER_NO}}</code></td><td>1617</td></tr>
+              <tr><td>Тип изделия</td><td><code>{{PRODUCT_TYPE}}</code></td><td>Щит ОЩО НКУ‑Ш8101‑2260 У3</td></tr>
+              <tr><td>Зав.№</td><td><code>{{FACTORY_NO}}</code></td><td>2002</td></tr>
+              <tr><td>IP</td><td><code>{{IP}}</code></td><td>IP31 или 31 — зависит от шаблона</td></tr>
+              <tr><td>Ток, А</td><td><code>{{CURRENT_DISPLAY}}</code></td><td>20А или Н/П, если значение 0</td></tr>
+              <tr><td>Напряжение, В</td><td><code>{{VOLTAGE_DISPLAY}}</code></td><td>380В или Н/П, если значение 0</td></tr>
+              <tr><td>Размер</td><td><code>{{SIZE}}</code></td><td>260x340x120</td></tr>
+              <tr><td>Вес</td><td><code>{{WEIGHT_DISPLAY}}</code></td><td>11кг или ___, если ячейка пустая</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="notice success">
+          <strong>Правило:</strong> если ток или напряжение равны <code>0</code>, в паспорт подставляется <code>Н/П</code>. Если вес пустой, подставляется <code>___</code>.
+        </div>
+      </section>
+
+      <section class="section" id="files">
+        <div class="onedrive-card">
+          <div>
+            <span class="kicker">OneDrive</span>
+            <h2>Общая папка с рабочими файлами</h2>
+            <p>В этой папке должны постоянно лежать актуальные инструкции, Word-шаблон паспорта и Python-скрипт.</p>
+          </div>
+          <a class="btn primary" href="https://lnk.chop.kz/empr" target="_blank" rel="noopener noreferrer">Открыть OneDrive</a>
+        </div>
+      </section>
+
+      <section class="section" id="troubleshooting">
+        <div class="section-head">
+          <span class="kicker">FAQ</span>
+          <h2>Частые ошибки</h2>
+        </div>
+        <details>
+          <summary>Ошибка: No module named docx</summary>
+          <p>Не установлена библиотека <code>python-docx</code>. Выполните команду установки библиотек для вашей системы.</p>
+        </details>
+        <details>
+          <summary>Ошибка: Word template was not found</summary>
+          <p>Проверьте, что рядом со скриптом лежит файл <code>passport_template_v2.docx</code>. Название должно совпадать полностью.</p>
+        </details>
+        <details>
+          <summary>Скрипт создал старые паспорта повторно</summary>
+          <p>При запуске укажите номер строки, с которой нужно начать генерацию новых изделий.</p>
+        </details>
+        <details>
+          <summary>В паспорте остались метки {{...}}</summary>
+          <p>Значит в шаблоне есть метка, которую скрипт не знает, или в Excel нет соответствующей колонки. Проверьте таблицу соответствия выше.</p>
+        </details>
+      </section>
+
+      <footer class="footer footer-banner" aria-label="Производство электрических шкафов">
+        <img src="assets/production-banner.jpeg" alt="Инженеры проектируют и собирают электрические шкафы" loading="lazy" />
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>
