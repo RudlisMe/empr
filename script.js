@@ -42,9 +42,9 @@ async function copyText(text) {
 
 document.querySelectorAll('.copy-btn').forEach((button) => {
   button.addEventListener('click', () => {
-    copyText(button.dataset.copy || '');
+    copyText(button.dataset.copy || button.closest('.code-block')?.querySelector('code')?.textContent || '');
     const old = button.textContent;
-    button.textContent = 'Copied';
+    button.textContent = 'Скопировано';
     setTimeout(() => { button.textContent = old; }, 1200);
   });
 });

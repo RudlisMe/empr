@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Инструкция и лендинг для генератора паспортов изделий из Excel и Word-шаблона." />
-  <title>Генератор паспортов изделий</title>
+  <meta name="description" content="Лендинг и инструкции для генерации паспортов НКУ и заполнения реестра НКУ." />
+  <title>НКУ: паспорта и реестр</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,255 +13,105 @@
 <body>
   <div class="noise" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="В начало">
-      <span class="brand-mark"><span class="bolt">⚡</span></span>
-      <span>
-        <strong>Passport Generator</strong>
-        <small>Excel → Word</small>
-      </span>
+    <a class="brand" href="index.html" aria-label="В начало">
+      <span class="brand-mark">⚡</span>
+      <span><strong>НКУ Automation</strong><small>Google Sheets • Excel • DOCX</small></span>
     </a>
     <nav class="topnav" aria-label="Основная навигация">
-      <a href="#install">Установка</a>
-      <a href="#usage">Использование</a>
-      <a href="#logic">Логика</a>
-      <a href="#files">Файлы</a>
+      <a class="active" href="index.html">Главная</a>
+      <a href="passports.html">Паспорта</a>
+      <a href="registry.html">Реестр</a>
+      <a href="files.html">Файлы</a>
     </nav>
-    <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">
-      <span class="sun">☀</span><span class="moon">☾</span>
-    </button>
+    <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">☀ / ☾</button>
   </header>
 
-  <div class="layout" id="top">
-    <aside class="sidebar" aria-label="Навигация по странице">
-      <div class="toc-card">
-        <div class="toc-title">Содержание</div>
-        <a href="#overview">Обзор</a>
-        <a href="#install-windows">Windows</a>
-        <a href="#install-macos">macOS</a>
-        <a href="#usage">Запуск</a>
-        <a href="#start-row">Стартовая строка</a>
-        <a href="#logic">Что куда подставляется</a>
-        <a href="#troubleshooting">Ошибки</a>
+  <main class="layout">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Актуальные ревизии скриптов</div>
+        <h1>Формирование паспорта и заполнение реестра НКУ с помощью Python скриптов</h1>
+        <p class="lead">Два инструмента работают с онлайн Google Таблицей или локальным Excel. Для macOS и Windows подготовлены интерактивные файлы запуска: они создают виртуальное окружение, проверяют зависимости и спрашивают режим работы.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="passports.html">Генерация паспортов</a>
+          <a class="btn green" href="registry.html">Заполнение реестра</a>
+          <a class="btn ghost" href="files.html">Список файлов</a>
+        </div>
       </div>
-      <div class="mini-card">
-        <span class="status-dot"></span>
-        <p>Работает локально: данные Excel не отправляются в интернет.</p>
+      <div class="cabinet-wrap" aria-label="Анимированный электрический шкаф">
+        <div class="grid-glow"></div>
+        <svg class="cabinet-svg" viewBox="0 0 460 410" role="img" aria-labelledby="cabinetTitle">
+          <title id="cabinetTitle">Электрический шкаф с автоматами, индикаторами и проводами</title>
+          <defs>
+            <linearGradient id="doorGradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="var(--svg-panel-a)"/>
+              <stop offset="100%" stop-color="var(--svg-panel-b)"/>
+            </linearGradient>
+          </defs>
+          <rect x="95" y="28" width="270" height="354" rx="18" class="cabinet-door"/>
+          <line x1="230" y1="28" x2="230" y2="382" class="door-line"/>
+          <rect x="342" y="158" width="8" height="48" rx="4" class="handle"/>
+          <line x1="80" y1="72" x2="95" y2="72" class="hinge"/><line x1="80" y1="330" x2="95" y2="330" class="hinge"/>
+          <rect x="116" y="56" width="92" height="42" rx="8" class="breaker"/>
+          <circle cx="135" cy="77" r="7" class="led red"/><circle cx="162" cy="77" r="7" class="led green"/><circle cx="189" cy="77" r="7" class="led blue"/>
+          <text x="258" y="80" class="meter-text">380 В</text><text x="258" y="101" class="meter-text">IP54</text>
+          <line x1="122" y1="132" x2="338" y2="132" class="busbar"/>
+          <line x1="122" y1="164" x2="338" y2="164" class="busbar" opacity=".7"/>
+          <g>
+            <rect x="120" y="200" width="38" height="72" rx="6" class="breaker"/><rect x="130" y="214" width="18" height="20" rx="3" class="switch"/>
+            <rect x="168" y="200" width="38" height="72" rx="6" class="breaker"/><rect x="178" y="214" width="18" height="20" rx="3" class="switch"/>
+            <rect x="216" y="200" width="38" height="72" rx="6" class="breaker"/><rect x="226" y="214" width="18" height="20" rx="3" class="switch"/>
+            <rect x="264" y="200" width="38" height="72" rx="6" class="breaker"/><rect x="274" y="214" width="18" height="20" rx="3" class="switch"/>
+            <rect x="312" y="200" width="30" height="72" rx="6" class="breaker"/><rect x="318" y="214" width="18" height="20" rx="3" class="switch"/>
+          </g>
+          <path d="M140 132 C132 158, 132 174, 139 200" class="wire blue"/>
+          <path d="M188 164 C194 178, 196 184, 187 200" class="wire green"/>
+          <path d="M286 132 C292 158, 294 174, 279 200" class="wire purple"/>
+          <path d="M135 272 C145 306, 190 314, 230 304 S295 296, 329 338" class="wire blue"/>
+          <rect x="124" y="315" width="190" height="12" rx="6" class="vent"/><rect x="124" y="340" width="190" height="12" rx="6" class="vent"/>
+        </svg>
       </div>
-    </aside>
+    </section>
 
-    <main class="content">
-      <section class="hero" id="overview">
-        <div class="hero-copy">
-          <div class="eyebrow">Автоматизация паспортов для электрических шкафов</div>
-          <h1>Генератор паспортов изделий из Excel и Word‑шаблона</h1>
-          <p class="lead">Заполните реестр изделий в Excel, укажите стартовую строку — скрипт создаст отдельный Word‑паспорт для каждого изделия и подставит номер заказа, тип изделия, заводской номер, IP, ток, напряжение, размер и вес.</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="https://lnk.chop.kz/empr" target="_blank" rel="noopener noreferrer">Открыть папку OneDrive</a>
-            <a class="btn ghost" href="#usage">Перейти к запуску</a>
-          </div>
-        </div>
-        <div class="cabinet-wrap" aria-label="Анимированная схема электрического шкафа">
-          <div class="grid-glow"></div>
-          <svg class="cabinet" viewBox="0 0 420 340" role="img" aria-labelledby="cabinetTitle">
-            <title id="cabinetTitle">Схематичный электрический шкаф с индикаторами</title>
-            <defs>
-              <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="var(--svg-panel-a)"/>
-                <stop offset="100%" stop-color="var(--svg-panel-b)"/>
-              </linearGradient>
-            </defs>
-            <rect x="82" y="38" width="256" height="270" rx="26" fill="url(#panel)" stroke="var(--svg-stroke)" stroke-width="2"/>
-            <rect x="108" y="70" width="204" height="52" rx="12" fill="var(--svg-slot)"/>
-            <rect x="108" y="142" width="204" height="116" rx="14" fill="var(--svg-slot)"/>
-            <line class="wire wire-1" x1="130" y1="170" x2="290" y2="170"/>
-            <line class="wire wire-2" x1="130" y1="200" x2="290" y2="200"/>
-            <line class="wire wire-3" x1="130" y1="230" x2="290" y2="230"/>
-            <circle class="led led-a" cx="132" cy="96" r="7"/>
-            <circle class="led led-b" cx="160" cy="96" r="7"/>
-            <circle class="led led-c" cx="188" cy="96" r="7"/>
-            <path class="pulse" d="M70 302 C120 284, 158 310, 204 292 S294 282, 352 306" fill="none"/>
-            <text x="210" y="292" text-anchor="middle" class="svg-label">DOCX</text>
-          </svg>
-        </div>
-      </section>
+    <section class="section">
+      <div class="section-head">
+        <span class="kicker">Навигация</span>
+        <h2>Выберите нужный сценарий</h2>
+        <p>Инструкции разделены на короткие страницы, чтобы не искать нужный блок в длинной инструкции.</p>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Генерация паспортов НКУ</h3>
+          <p>Создание Word-паспортов по шаблону из онлайн Google Таблицы или локального Excel.</p>
+          <div class="badges"><span class="badge">generate_passports_v7_Onln.py</span><span class="badge">DOCX</span><span class="badge">Google Sheets</span></div>
+          <div class="actions"><a class="btn primary" href="passports.html">Открыть инструкцию</a></div>
+        </article>
+        <article class="card">
+          <h3>Заполнение реестра НКУ</h3>
+          <p>Интерактивное добавление строк в реестр с автоматическим формированием типа изделия, номеров и параметров.</p>
+          <div class="badges"><span class="badge">fill_registry_nku_Onln_v9.py</span><span class="badge">Excel</span><span class="badge">Google Sheets</span></div>
+          <div class="actions"><a class="btn green" href="registry.html">Открыть инструкцию</a></div>
+        </article>
+      </div>
+    </section>
 
-      <section class="section" id="install">
-        <div class="section-head">
-          <span class="kicker">Setup</span>
-          <h2>Установка Python и библиотек</h2>
-          <p>Действия выполняются один раз на компьютере, где будут генерироваться паспорта.</p>
-        </div>
+    <section class="section">
+      <div class="section-head">
+        <span class="kicker">Общее правило</span>
+        <h2>Рабочая папка может быть любой</h2>
+        <p>Главное — положить рядом сам скрипт, файл запуска и нужные служебные файлы. Файлы запуска сами переходят в свою папку и создают <span class="inline-code">.venv</span>, если его нет.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>Онлайн</h3><p>Нужен <span class="inline-code">google_service_account.json</span> и ссылка на Google Таблицу с правильным <span class="inline-code">gid</span>.</p></div>
+        <div class="card"><h3>Локально</h3><p>Нужен один Excel-файл <span class="inline-code">.xlsx</span> рядом со скриптом, если путь не указывается вручную.</p></div>
+        <div class="card"><h3>Зависимости</h3><p>Интерактивные файлы запуска сами проверяют и устанавливают нужные Python-библиотеки.</p></div>
+      </div>
+    </section>
 
-        <div class="tabs" role="tablist" aria-label="Выбор операционной системы">
-          <button class="tab active" data-tab="windows" type="button">Windows</button>
-          <button class="tab" data-tab="macos" type="button">macOS</button>
-        </div>
-
-        <div class="tab-panel active" id="install-windows" data-panel="windows">
-          <h3>Windows</h3>
-          <ol class="steps">
-            <li>Скачайте Python с официального сайта <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org/downloads</a>.</li>
-            <li>Запустите установщик и обязательно поставьте галочку <strong>Add python.exe to PATH</strong>.</li>
-            <li>Откройте PowerShell или Command Prompt и проверьте установку.</li>
-          </ol>
-          <div class="code-block">
-            <div class="code-head"><span>Проверить Python</span><button class="copy-btn" data-copy="py -3 --version" aria-label="Скопировать команду">Copy</button></div>
-            <pre><code>py -3 --version</code></pre>
-          </div>
-          <p>Установите библиотеки для работы с Word и Excel:</p>
-          <div class="code-block">
-            <div class="code-head"><span>Установить библиотеки</span><button class="copy-btn" data-copy="py -3 -m pip install python-docx openpyxl" aria-label="Скопировать команду">Copy</button></div>
-            <pre><code>py -3 -m pip install python-docx openpyxl</code></pre>
-          </div>
-        </div>
-
-        <div class="tab-panel" id="install-macos" data-panel="macos">
-          <h3>macOS</h3>
-          <ol class="steps">
-            <li>Откройте Terminal: <strong>Cmd + Space → Terminal → Enter</strong>.</li>
-            <li>Проверьте, установлен ли Python.</li>
-          </ol>
-          <div class="code-block">
-            <div class="code-head"><span>Проверить Python</span><button class="copy-btn" data-copy="python3 --version" aria-label="Скопировать команду">Copy</button></div>
-            <pre><code>python3 --version</code></pre>
-          </div>
-          <p>Если Python не найден, скачайте установщик с <a href="https://www.python.org/downloads/macos/" target="_blank" rel="noopener noreferrer">python.org/downloads/macos</a>. Затем установите библиотеки:</p>
-          <div class="code-block">
-            <div class="code-head"><span>Установить библиотеки</span><button class="copy-btn" data-copy="python3 -m pip install python-docx openpyxl" aria-label="Скопировать команду">Copy</button></div>
-            <pre><code>python3 -m pip install python-docx openpyxl</code></pre>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="usage">
-        <div class="section-head">
-          <span class="kicker">Workflow</span>
-          <h2>Как пользоваться генератором</h2>
-          <p>Скрипт рассчитан на папку с тремя основными файлами.</p>
-        </div>
-        <div class="folder-card">
-          <div class="folder-title">Структура папки</div>
-          <pre class="tree"><code>PassportGenerator/
-├─ generate_passports.py
-├─ passport_template_v2.docx
-├─ registry.xlsx
-└─ Gotovye_pasporta/    ← создаётся автоматически</code></pre>
-        </div>
-        <div class="notice">
-          <strong>Важно:</strong> перед запуском закройте <code>registry.xlsx</code> в Excel, чтобы Python мог прочитать файл без блокировки.
-        </div>
-
-        <h3>Запуск на Windows</h3>
-        <p>Откройте папку с файлами, нажмите правой кнопкой в пустом месте → <strong>Open in Terminal</strong>, затем выполните:</p>
-        <div class="code-block">
-          <div class="code-head"><span>Запустить генератор</span><button class="copy-btn" data-copy="py -3 generate_passports.py" aria-label="Скопировать команду">Copy</button></div>
-          <pre><code>py -3 generate_passports.py</code></pre>
-        </div>
-
-        <h3>Запуск на macOS</h3>
-        <p>Откройте Terminal, перейдите в папку и запустите скрипт:</p>
-        <div class="code-block">
-          <div class="code-head"><span>Перейти в папку</span><button class="copy-btn" data-copy="cd ~/Desktop/test" aria-label="Скопировать команду">Copy</button></div>
-          <pre><code>cd ~/Desktop/test</code></pre>
-        </div>
-        <div class="code-block">
-          <div class="code-head"><span>Запустить генератор</span><button class="copy-btn" data-copy="python3 generate_passports.py" aria-label="Скопировать команду">Copy</button></div>
-          <pre><code>python3 generate_passports.py</code></pre>
-        </div>
-      </section>
-
-      <section class="section" id="start-row">
-        <div class="section-head">
-          <span class="kicker">Start row</span>
-          <h2>Выбор строки, с которой начинать</h2>
-          <p>Так как Excel постоянно пополняется, генератор не обязан каждый раз создавать паспорта по всей таблице.</p>
-        </div>
-        <p>При запуске скрипт спросит:</p>
-        <div class="terminal-demo">
-          <span class="prompt">Start Excel row for generation [press Enter for 3]:</span>
-          <span class="cursor"></span>
-        </div>
-        <div class="two-col">
-          <div class="info-card">
-            <h3>Нажать Enter</h3>
-            <p>Генерация начнётся с первой строки с данными.</p>
-          </div>
-          <div class="info-card">
-            <h3>Ввести 20</h3>
-            <p>Генерация начнётся с 20-й строки Excel и продолжится до конца таблицы.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="logic">
-        <div class="section-head">
-          <span class="kicker">Mapping</span>
-          <h2>Логика работы скрипта</h2>
-          <p>Скрипт читает значения из колонок Excel и заменяет метки в Word-шаблоне.</p>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Колонка Excel</th><th>Метка Word</th><th>Пример результата</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Номер заказа</td><td><code>{{ORDER_NO}}</code></td><td>1617</td></tr>
-              <tr><td>Тип изделия</td><td><code>{{PRODUCT_TYPE}}</code></td><td>Щит ОЩО НКУ‑Ш8101‑2260 У3</td></tr>
-              <tr><td>Зав.№</td><td><code>{{FACTORY_NO}}</code></td><td>2002</td></tr>
-              <tr><td>IP</td><td><code>{{IP}}</code></td><td>IP31 или 31 — зависит от шаблона</td></tr>
-              <tr><td>Ток, А</td><td><code>{{CURRENT_DISPLAY}}</code></td><td>20А или Н/П, если значение 0</td></tr>
-              <tr><td>Напряжение, В</td><td><code>{{VOLTAGE_DISPLAY}}</code></td><td>380В или Н/П, если значение 0</td></tr>
-              <tr><td>Размер</td><td><code>{{SIZE}}</code></td><td>260x340x120</td></tr>
-              <tr><td>Вес</td><td><code>{{WEIGHT_DISPLAY}}</code></td><td>11кг или ___, если ячейка пустая</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="notice success">
-          <strong>Правило:</strong> если ток или напряжение равны <code>0</code>, в паспорт подставляется <code>Н/П</code>. Если вес пустой, подставляется <code>___</code>.
-        </div>
-      </section>
-
-      <section class="section" id="files">
-        <div class="onedrive-card">
-          <div>
-            <span class="kicker">OneDrive</span>
-            <h2>Общая папка с рабочими файлами</h2>
-            <p>В этой папке должны постоянно лежать актуальные инструкции, Word-шаблон паспорта и Python-скрипт.</p>
-          </div>
-          <a class="btn primary" href="https://lnk.chop.kz/empr" target="_blank" rel="noopener noreferrer">Открыть OneDrive</a>
-        </div>
-      </section>
-
-      <section class="section" id="troubleshooting">
-        <div class="section-head">
-          <span class="kicker">FAQ</span>
-          <h2>Частые ошибки</h2>
-        </div>
-        <details>
-          <summary>Ошибка: No module named docx</summary>
-          <p>Не установлена библиотека <code>python-docx</code>. Выполните команду установки библиотек для вашей системы.</p>
-        </details>
-        <details>
-          <summary>Ошибка: Word template was not found</summary>
-          <p>Проверьте, что рядом со скриптом лежит файл <code>passport_template_v2.docx</code>. Название должно совпадать полностью.</p>
-        </details>
-        <details>
-          <summary>Скрипт создал старые паспорта повторно</summary>
-          <p>При запуске укажите номер строки, с которой нужно начать генерацию новых изделий.</p>
-        </details>
-        <details>
-          <summary>В паспорте остались метки {{...}}</summary>
-          <p>Значит в шаблоне есть метка, которую скрипт не знает, или в Excel нет соответствующей колонки. Проверьте таблицу соответствия выше.</p>
-        </details>
-      </section>
-
-      <footer class="footer footer-banner" aria-label="Производство электрических шкафов">
-        <img src="assets/production-banner.jpeg" alt="Инженеры проектируют и собирают электрические шкафы" loading="lazy" />
-      </footer>
-    </main>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite">Команда скопирована</div>
+    <div class="footer-banner"><img src="assets/production-banner.jpeg" alt="Производство НКУ" /></div>
+    <footer class="footer">НКУ Automation • текущие страницы обновлены под ревизии v7 Onln и v9 Onln.</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
   <script src="script.js"></script>
 </body>
 </html>

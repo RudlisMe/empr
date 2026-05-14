@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Инструкция по генерации паспортов НКУ из Google Sheets или Excel." />
+  <title>Генерация паспортов НКУ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Генерация паспортов</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a class="active" href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">generate_passports_v7_Onln.py</div>
+        <h1>Генерация паспортов НКУ</h1>
+        <p class="lead">Скрипт создаёт отдельные Word-паспорта из Word-шаблона и данных реестра. Источник данных выбирается при запуске: онлайн Google Таблица или локальный Excel.</p>
+        <div class="hero-actions"><a class="btn primary" href="downloads/Инструкция_генерация_паспортов_НКУ_v7_Onln.docx">Скачать DOCX-инструкцию</a><a class="btn ghost" href="files.html">Скачать файлы запуска</a></div>
+      </div>
+      <div class="card">
+        <h3>Что делает скрипт</h3>
+        <p>Берёт строки реестра, заменяет метки в <span class="inline-code">passport_template_v2.docx</span> и сохраняет готовые документы в папку <span class="inline-code">Gotovye_pasporta</span>.</p>
+        <div class="badges"><span class="badge">Google Sheets</span><span class="badge">Excel</span><span class="badge">Word DOCX</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="folder">
+      <div class="section-head"><span class="kicker">Папка</span><h2>Что должно лежать рядом</h2></div>
+      <div class="folder-card"><div class="folder-title">Минимальная структура</div><pre class="tree"><code>PassportGenerator/
+├─ generate_passports_v7_Onln.py
+├─ passport_template_v2.docx
+├─ google_service_account.json                 ← для онлайн-режима
+├─ registry.xlsx                                ← для локального режима
+├─ run_generate_passports_interactive_Onln_macOS_auto_venv.command
+└─ run_generate_passports_interactive_Onln_Windows.bat</code></pre></div>
+      <div class="notice"><strong>Важно:</strong> для локального режима Excel-файл должен быть закрыт. Для онлайн-режима таблица должна быть расшарена на service account с правами редактора.</div>
+    </section>
+
+    <section class="section" id="launch-files">
+      <div class="section-head"><span class="kicker">Быстрый запуск</span><h2>Запуск двойным кликом</h2><p>Рекомендуемый способ для обычных пользователей — использовать готовый файл запуска под свою операционную систему.</p></div>
+      <div class="grid-2">
+        <div class="card"><h3>macOS</h3><p>Запуск через файл <span class="inline-code">run_generate_passports_interactive_Onln_macOS_auto_venv.command</span>.</p></div>
+        <div class="card"><h3>Windows</h3><p>Запуск через файл <span class="inline-code">run_generate_passports_interactive_Onln_Windows.bat</span>.</p></div>
+      </div>
+      <h3>Команды для macOS после скачивания .command</h3>
+      <p>Один раз выдать права на запуск:</p>
+      <div class="code-block"><div class="code-head"><span>Права на запуск</span><button class="copy-btn" data-copy="chmod +x /путь/к/run_generate_passports_interactive_Onln_macOS_auto_venv.command">Копировать</button></div><pre><code>chmod +x /путь/к/run_generate_passports_interactive_Onln_macOS_auto_venv.command</code></pre></div>
+      <p>Если macOS заблокировала файл после скачивания:</p>
+      <div class="code-block"><div class="code-head"><span>Снять quarantine-метку</span><button class="copy-btn" data-copy="xattr -d com.apple.quarantine /путь/к/run_generate_passports_interactive_Onln_macOS_auto_venv.command">Копировать</button></div><pre><code>xattr -d com.apple.quarantine /путь/к/run_generate_passports_interactive_Onln_macOS_auto_venv.command</code></pre></div>
+      <div class="notice"><strong>Удобный способ:</strong> в Terminal напишите <span class="inline-code">chmod +x </span>, затем перетащите файл .command в окно Terminal и нажмите Enter.</div>
+    </section>
+
+    <section class="section" id="manual">
+      <div class="section-head"><span class="kicker">Ручной запуск</span><h2>Команды запуска без интерактивного файла</h2></div>
+      <div class="tabs" role="tablist"><button class="tab active" data-tab="online" type="button">Онлайн</button><button class="tab" data-tab="local" type="button">Локальный Excel</button></div>
+      <div class="tab-panel active" data-panel="online">
+        <p>Онлайн-режим: передаётся ссылка на Google Таблицу с нужным <span class="inline-code">gid</span>.</p>
+        <div class="code-block"><div class="code-head"><span>macOS</span><button class="copy-btn" data-copy="python3 generate_passports_v7_Onln.py &quot;https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА&quot;">Копировать</button></div><pre><code>python3 generate_passports_v7_Onln.py "https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА"</code></pre></div>
+        <div class="code-block"><div class="code-head"><span>Windows</span><button class="copy-btn" data-copy="py -3 generate_passports_v7_Onln.py &quot;https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА&quot;">Копировать</button></div><pre><code>py -3 generate_passports_v7_Onln.py "https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА"</code></pre></div>
+      </div>
+      <div class="tab-panel" data-panel="local">
+        <p>Локальный режим: скрипт запускается без ссылки и ищет Excel рядом с собой, как в старом режиме.</p>
+        <div class="code-block"><div class="code-head"><span>macOS</span><button class="copy-btn" data-copy="python3 generate_passports_v7_Onln.py">Копировать</button></div><pre><code>python3 generate_passports_v7_Onln.py</code></pre></div>
+        <div class="code-block"><div class="code-head"><span>Windows</span><button class="copy-btn" data-copy="py -3 generate_passports_v7_Onln.py">Копировать</button></div><pre><code>py -3 generate_passports_v7_Onln.py</code></pre></div>
+      </div>
+    </section>
+
+    <section class="section" id="logic">
+      <div class="section-head"><span class="kicker">Данные</span><h2>Какие поля используются</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Колонка реестра</th><th>Метка Word</th><th>Назначение</th></tr></thead><tbody>
+        <tr><td>Номер заказа</td><td>{{ORDER_NO}}</td><td>Заводской заказ.</td></tr>
+        <tr><td>Тип изделия</td><td>{{PRODUCT_TYPE}}</td><td>Наименование и тип НКУ.</td></tr>
+        <tr><td>Зав.№</td><td>{{FACTORY_NO}}</td><td>Заводской номер.</td></tr>
+        <tr><td>IP</td><td>{{IP}}</td><td>Степень защиты без лишнего текста.</td></tr>
+        <tr><td>Ток, А</td><td>{{CURRENT_DISPLAY}}</td><td>Номинальный ток с единицей измерения.</td></tr>
+        <tr><td>Напряжение, В</td><td>{{VOLTAGE_DISPLAY}}</td><td>Номинальное напряжение с единицей измерения.</td></tr>
+        <tr><td>Габаритный размер, ВхШхГ, мм</td><td>{{SIZE}}</td><td>Габариты изделия.</td></tr>
+        <tr><td>Вес, кг</td><td>{{WEIGHT_DISPLAY}}</td><td>Вес с единицей измерения.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section" id="errors">
+      <div class="section-head"><span class="kicker">Ошибки</span><h2>Частые проблемы</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Сообщение</th><th>Что сделать</th></tr></thead><tbody>
+        <tr><td>Word template was not found</td><td>Положить <span class="inline-code">passport_template_v2.docx</span> рядом со скриптом.</td></tr>
+        <tr><td>No module named docx</td><td>Интерактивный запуск установит <span class="inline-code">python-docx</span>; вручную: <span class="inline-code">pip install python-docx</span>.</td></tr>
+        <tr><td>No module named openpyxl</td><td>Установить <span class="inline-code">openpyxl</span>.</td></tr>
+        <tr><td>google_service_account.json не найден</td><td>Положить JSON-ключ рядом со скриптом.</td></tr>
+        <tr><td>Нет доступа к Google Таблице</td><td>Расшарить таблицу на service account с правами Editor.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <footer class="footer">Генерация паспортов НКУ • текущая ревизия: generate_passports_v7_Onln.py</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>

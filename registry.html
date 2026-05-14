@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Инструкция по заполнению реестра НКУ через Python-скрипт." />
+  <title>Заполнение реестра НКУ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Заполнение реестра</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a href="passports.html">Паспорта</a><a class="active" href="registry.html">Реестр</a><a href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">fill_registry_nku_Onln_v9.py</div>
+        <h1>Заполнение реестра НКУ</h1>
+        <p class="lead">Скрипт помогает добавлять позиции в реестр: формирует тип изделия, присваивает номера, переносит ток и напряжение, сохраняет данные в Google Таблицу или локальный Excel.</p>
+        <div class="hero-actions"><a class="btn green" href="downloads/Инструкция_заполнение_реестра_НКУ_v9_Onln.docx">Скачать DOCX-инструкцию</a><a class="btn ghost" href="files.html">Скачать файлы запуска</a></div>
+      </div>
+      <div class="card">
+        <h3>Текущие возможности</h3>
+        <p>Онлайн-режим работает по ссылке на Google Таблицу. Локальный режим можно запускать без указания Excel-файла: скрипт сам найдёт один <span class="inline-code">.xlsx</span> рядом с собой.</p>
+        <div class="badges"><span class="badge">v9 Onln</span><span class="badge">Google Sheets</span><span class="badge">Excel</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="folder">
+      <div class="section-head"><span class="kicker">Папка</span><h2>Что должно лежать рядом</h2></div>
+      <div class="folder-card"><div class="folder-title">Минимальная структура</div><pre class="tree"><code>RegistryNKU/
+├─ fill_registry_nku_Onln_v9.py
+├─ google_service_account.json                 ← для онлайн-режима
+├─ registry.xlsx                                ← для локального режима
+├─ run_fill_registry_nku_interactive_Onln_macOS.command
+└─ run_fill_registry_nku_interactive_Onln_Windows.bat</code></pre></div>
+      <div class="notice"><strong>Важно:</strong> JSON-ключ никому не отправлять и не выкладывать. Для каждой новой Google Таблицы нужно выдать service account права редактора.</div>
+    </section>
+
+    <section class="section" id="launch-files">
+      <div class="section-head"><span class="kicker">Быстрый запуск</span><h2>Запуск двойным кликом</h2><p>Файл запуска создаёт <span class="inline-code">.venv</span>, обновляет pip, проверяет зависимости и спрашивает режим работы.</p></div>
+      <div class="grid-2">
+        <div class="card"><h3>macOS</h3><p>Используйте <span class="inline-code">run_fill_registry_nku_interactive_Onln_macOS.command</span>.</p></div>
+        <div class="card"><h3>Windows</h3><p>Используйте <span class="inline-code">run_fill_registry_nku_interactive_Onln_Windows.bat</span>.</p></div>
+      </div>
+      <h3>Команды для macOS после скачивания .command</h3>
+      <p>Один раз выдать права на запуск:</p>
+      <div class="code-block"><div class="code-head"><span>Права на запуск</span><button class="copy-btn" data-copy="chmod +x /путь/к/run_fill_registry_nku_interactive_Onln_macOS.command">Копировать</button></div><pre><code>chmod +x /путь/к/run_fill_registry_nku_interactive_Onln_macOS.command</code></pre></div>
+      <p>Если macOS заблокировала файл после скачивания:</p>
+      <div class="code-block"><div class="code-head"><span>Снять quarantine-метку</span><button class="copy-btn" data-copy="xattr -d com.apple.quarantine /путь/к/run_fill_registry_nku_interactive_Onln_macOS.command">Копировать</button></div><pre><code>xattr -d com.apple.quarantine /путь/к/run_fill_registry_nku_interactive_Onln_macOS.command</code></pre></div>
+      <div class="notice"><strong>Удобный способ:</strong> в Terminal напишите <span class="inline-code">chmod +x </span>, перетащите файл .command в окно Terminal и нажмите Enter.</div>
+    </section>
+
+    <section class="section" id="manual">
+      <div class="section-head"><span class="kicker">Ручной запуск</span><h2>Команды запуска без интерактивного файла</h2></div>
+      <div class="tabs" role="tablist"><button class="tab active" data-tab="online" type="button">Онлайн</button><button class="tab" data-tab="local" type="button">Локальный Excel</button></div>
+      <div class="tab-panel active" data-panel="online">
+        <p>Онлайн-режим: передаётся ссылка на Google Таблицу и файл учётных данных service account.</p>
+        <div class="code-block"><div class="code-head"><span>macOS</span><button class="copy-btn" data-copy="python3 fill_registry_nku_Onln_v9.py &quot;https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА&quot; --credentials google_service_account.json">Копировать</button></div><pre><code>python3 fill_registry_nku_Onln_v9.py "https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА" --credentials google_service_account.json</code></pre></div>
+        <div class="code-block"><div class="code-head"><span>Windows</span><button class="copy-btn" data-copy="py -3 fill_registry_nku_Onln_v9.py &quot;https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА&quot; --credentials google_service_account.json">Копировать</button></div><pre><code>py -3 fill_registry_nku_Onln_v9.py "https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/edit?gid=GID_ЛИСТА#gid=GID_ЛИСТА" --credentials google_service_account.json</code></pre></div>
+      </div>
+      <div class="tab-panel" data-panel="local">
+        <p>Локальный режим: если рядом лежит один <span class="inline-code">.xlsx</span>, путь можно не указывать.</p>
+        <div class="code-block"><div class="code-head"><span>macOS</span><button class="copy-btn" data-copy="python3 fill_registry_nku_Onln_v9.py">Копировать</button></div><pre><code>python3 fill_registry_nku_Onln_v9.py</code></pre></div>
+        <div class="code-block"><div class="code-head"><span>Windows</span><button class="copy-btn" data-copy="py -3 fill_registry_nku_Onln_v9.py">Копировать</button></div><pre><code>py -3 fill_registry_nku_Onln_v9.py</code></pre></div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="section-head"><span class="kicker">Ввод данных</span><h2>Как проходит заполнение</h2></div>
+      <div class="grid-3">
+        <div class="card"><h3>1. Выбор параметров</h3><p>Скрипт пошагово спрашивает конструктивное исполнение, класс, группу, серию, ток, напряжение и климатическое исполнение.</p></div>
+        <div class="card"><h3>2. Формирование типа</h3><p>После выбора параметров формируется тип изделия НКУ.</p></div>
+        <div class="card"><h3>3. Запись строки</h3><p>Вводятся номер заказа, IP, размер, вес. После полной строки данные сохраняются.</p></div>
+      </div>
+      <div class="notice"><strong>Подсказка:</strong> если в вопросе есть значение в квадратных скобках, можно нажать Enter — будет повторено предложенное значение.</div>
+    </section>
+
+    <section class="section" id="commands">
+      <div class="section-head"><span class="kicker">Команды ввода</span><h2>Основные команды во время работы</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Что ввести</th><th>Что произойдёт</th></tr></thead><tbody>
+        <tr><td>Enter</td><td>Повторить значение по умолчанию в квадратных скобках.</td></tr>
+        <tr><td>Цифра меню</td><td>Выбрать пункт меню.</td></tr>
+        <tr><td>back, b, назад</td><td>Вернуться на предыдущий шаг до сохранения строки.</td></tr>
+        <tr><td>q, quit, exit</td><td>Выйти из скрипта. Уже сохранённые строки останутся.</td></tr>
+        <tr><td>help, h, ?</td><td>Показать подсказку.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section" id="errors">
+      <div class="section-head"><span class="kicker">Ошибки</span><h2>Частые проблемы</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Сообщение</th><th>Что сделать</th></tr></thead><tbody>
+        <tr><td>No module named openpyxl</td><td>Интерактивный запуск установит автоматически; вручную: <span class="inline-code">pip install openpyxl</span>.</td></tr>
+        <tr><td>No module named gspread</td><td>Установить <span class="inline-code">gspread google-auth</span>.</td></tr>
+        <tr><td>google_service_account.json не найден</td><td>Положить JSON-ключ рядом со скриптом.</td></tr>
+        <tr><td>Открывается не тот лист</td><td>Проверить <span class="inline-code">gid</span> в ссылке.</td></tr>
+        <tr><td>Рядом несколько .xlsx</td><td>Оставить один нужный Excel-файл или запустить вручную с явным путём.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <footer class="footer">Заполнение реестра НКУ • текущая ревизия: fill_registry_nku_Onln_v9.py</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>

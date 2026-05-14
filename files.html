@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Файлы для генерации паспортов и заполнения реестра НКУ." />
+  <title>Файлы проекта НКУ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Файлы и загрузки</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a class="active" href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Downloads</div>
+        <h1>Файлы текущих ревизий</h1>
+        <p class="lead">На этой странице собраны основные скрипты, файлы запуска и короткие инструкции. JSON-ключ Google здесь не размещается — он должен храниться только у пользователя.</p>
+      </div>
+      <div class="card">
+        <h3>Главное правило</h3>
+        <p>Файл запуска должен лежать рядом со своим Python-скриптом. Папка может называться как угодно и находиться где угодно.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="kicker">Паспорта</span><h2>Генерация паспортов</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Файл</th><th>Назначение</th><th>Скачать</th></tr></thead><tbody>
+        <tr><td>generate_passports_v7_Onln.py</td><td>Основной скрипт генерации паспортов.</td><td><a class="btn ghost" href="downloads/generate_passports_v7_Onln.py">Скачать</a></td></tr>
+        <tr><td>passport_template_v2.docx</td><td>Word-шаблон паспорта с метками для подстановки данных.</td><td><a class="btn ghost" href="downloads/passport_template_v2.docx">Скачать</a></td></tr>
+        <tr><td>run_generate_passports_interactive_Onln_macOS_auto_venv.command</td><td>Интерактивный запуск для macOS с автоматическим созданием .venv.</td><td><a class="btn ghost" href="downloads/run_generate_passports_interactive_Onln_macOS_auto_venv.command">Скачать</a></td></tr>
+        <tr><td>run_generate_passports_interactive_Onln_Windows.bat</td><td>Интерактивный запуск для Windows.</td><td><a class="btn ghost" href="downloads/run_generate_passports_interactive_Onln_Windows.bat">Скачать</a></td></tr>
+        <tr><td>Инструкция_генерация_паспортов_НКУ_v7_Onln.docx</td><td>Отдельная инструкция в Word.</td><td><a class="btn ghost" href="downloads/Инструкция_генерация_паспортов_НКУ_v7_Onln.docx">Скачать</a></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="kicker">Реестр</span><h2>Заполнение реестра</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Файл</th><th>Назначение</th><th>Скачать</th></tr></thead><tbody>
+        <tr><td>fill_registry_nku_Onln_v9.py</td><td>Основной скрипт заполнения реестра НКУ.</td><td><a class="btn ghost" href="downloads/fill_registry_nku_Onln_v9.py">Скачать</a></td></tr>
+        <tr><td>run_fill_registry_nku_interactive_Onln_macOS.command</td><td>Интерактивный запуск для macOS с автоматическим созданием .venv.</td><td><a class="btn ghost" href="downloads/run_fill_registry_nku_interactive_Onln_macOS.command">Скачать</a></td></tr>
+        <tr><td>run_fill_registry_nku_interactive_Onln_Windows.bat</td><td>Интерактивный запуск для Windows.</td><td><a class="btn ghost" href="downloads/run_fill_registry_nku_interactive_Onln_Windows.bat">Скачать</a></td></tr>
+        <tr><td>Инструкция_заполнение_реестра_НКУ_v9_Onln.docx</td><td>Отдельная инструкция в Word.</td><td><a class="btn ghost" href="downloads/Инструкция_заполнение_реестра_НКУ_v9_Onln.docx">Скачать</a></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="kicker">Service account</span><h2>Что не входит в архив</h2></div>
+      <div class="notice"><strong>google_service_account.json</strong> не должен выкладываться на сайт и не должен отправляться посторонним. Для онлайн-режима пользователь кладёт свой JSON-ключ рядом со скриптом вручную.</div>
+      <div class="notice"><strong>Рабочие Excel-файлы</strong> кладутся пользователем в рабочую папку отдельно. Шаблон <strong>passport_template_v2.docx</strong> доступен для скачивания выше в разделе генерации паспортов.</div>
+    </section>
+
+    <footer class="footer">Файлы проекта НКУ Automation</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>
