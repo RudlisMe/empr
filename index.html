@@ -21,6 +21,8 @@
       <a class="active" href="index.html">Главная</a>
       <a href="passports.html">Паспорта</a>
       <a href="registry.html">Реестр</a>
+      <a href="bot.html">Telegram-бот</a>
+      <a href="prompts.html">Промты</a>
       <a href="files.html">Файлы</a>
     </nav>
     <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">☀ / ☾</button>
@@ -30,11 +32,13 @@
     <section class="hero">
       <div class="hero-copy">
         <div class="eyebrow">Актуальные ревизии скриптов</div>
-        <h1>Формирование паспорта и заполнение реестра НКУ с помощью Python скриптов</h1>
-        <p class="lead">Два инструмента работают с онлайн Google Таблицей или локальным Excel. Для macOS и Windows подготовлены интерактивные файлы запуска: они создают виртуальное окружение, проверяют зависимости и спрашивают режим работы.</p>
+        <h1>Паспорта, реестр НКУ и Telegram-бот для работы с Google Таблицей</h1>
+        <p class="lead">Локальные Python-скрипты по-прежнему можно запускать через консоль на Windows/macOS. Дополнительно доступен Telegram-бот на VPS: он заполняет онлайн-реестр и генерирует паспорта из Google Таблицы прямо из чата.</p>
         <div class="hero-actions">
           <a class="btn primary" href="passports.html">Генерация паспортов</a>
           <a class="btn green" href="registry.html">Заполнение реестра</a>
+          <a class="btn ghost" href="bot.html">Telegram-бот</a>
+          <a class="btn ghost" href="prompts.html">Промты для доработок</a>
           <a class="btn ghost" href="files.html">Список файлов</a>
         </div>
       </div>
@@ -79,7 +83,7 @@
         <h2>Выберите нужный сценарий</h2>
         <p>Инструкции разделены на короткие страницы, чтобы не искать нужный блок в длинной инструкции.</p>
       </div>
-      <div class="grid-2">
+      <div class="grid-3">
         <article class="card">
           <h3>Генерация паспортов НКУ</h3>
           <p>Создание Word-паспортов по шаблону из онлайн Google Таблицы или локального Excel.</p>
@@ -92,9 +96,29 @@
           <div class="badges"><span class="badge">fill_registry_nku_Onln_v9.py</span><span class="badge">Excel</span><span class="badge">Google Sheets</span></div>
           <div class="actions"><a class="btn green" href="registry.html">Открыть инструкцию</a></div>
         </article>
+        <article class="card">
+          <h3>Telegram-бот на VPS</h3>
+          <p>Работа с онлайн-реестром из Telegram: заполнение строк, генерация паспортов и отправка готовых DOCX/ZIP в чат.</p>
+          <div class="badges"><span class="badge">Telegram</span><span class="badge">VPS</span><span class="badge">Google Sheets</span></div>
+          <div class="actions"><a class="btn primary" href="bot.html">Открыть инструкцию</a></div>
+        </article>
       </div>
     </section>
 
+
+    <section class="section">
+      <div class="section-head">
+        <span class="kicker">Telegram-бот</span>
+        <h2>Один интерфейс для реестра и паспортов</h2>
+        <p>Бот запускается на VPS как служба. Пользователь отправляет ссылку на Google Таблицу, выбирает действие и работает без запуска консоли на своём компьютере.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>Заполнение реестра</h3><p>Бот ведёт по шагам, формирует тип изделия, записывает строку и возвращает в меню действий.</p></div>
+        <div class="card"><h3>Генерация паспортов</h3><p>Можно сгенерировать паспорта по последним строкам или указать начальную строку реестра.</p></div>
+        <div class="card"><h3>Разворачивание</h3><p>Код хранится в GitHub, на новом VPS установка выполняется одной командой и интерактивно запрашивает секреты.</p></div>
+      </div>
+      <div class="actions"><a class="btn primary" href="bot.html">Инструкция по боту</a></div>
+    </section>
     <section class="section">
       <div class="section-head">
         <span class="kicker">Общее правило</span>
@@ -108,8 +132,18 @@
       </div>
     </section>
 
+
+    <section class="section">
+      <div class="section-head">
+        <span class="kicker">Продолжение разработки</span>
+        <h2>Промты для ChatGPT</h2>
+        <p>Отдельный раздел с готовым контекстом проекта: что уже сделано, как устроен бот, где лежит код и какие правила соблюдать при новых правках.</p>
+      </div>
+      <div class="actions"><a class="btn ghost" href="prompts.html">Открыть раздел промтов</a></div>
+    </section>
+
     <div class="footer-banner"><img src="assets/production-banner.jpeg" alt="Производство НКУ" /></div>
-    <footer class="footer">НКУ Automation • текущие страницы обновлены под ревизии v7 Onln и v9 Onln.</footer>
+    <footer class="footer">2026 I.C.</footer>
   </main>
   <div class="toast" id="toast">Команда скопирована</div>
   <script src="script.js"></script>

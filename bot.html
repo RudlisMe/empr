@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Инструкция по установке Telegram-бота НКУ на VPS и работе с онлайн-реестром." />
+  <title>Telegram-бот НКУ на VPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Telegram-бот и VPS</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a class="active" href="bot.html">Telegram-бот</a><a href="prompts.html">Промты</a><a href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Telegram • VPS • Google Sheets</div>
+        <h1>Telegram-бот для реестра и паспортов НКУ</h1>
+        <p class="lead">Бот работает на VPS как системная служба. После команды <span class="inline-code">/start</span> он просит ссылку на Google Таблицу, затем предлагает: заполнить реестр или сгенерировать паспорта по уже внесённым строкам.</p>
+        <div class="hero-actions"><a class="btn primary" href="#install">Установка на VPS</a><a class="btn ghost" href="#commands">Команды обслуживания</a></div>
+      </div>
+      <div class="card">
+        <h3>Что умеет бот</h3>
+        <p>Заполняет онлайн-реестр, генерирует DOCX-паспорта, отправляет файлы в Telegram и возвращает пользователя в меню действий.</p>
+        <div class="badges"><span class="badge">nku-registry-bot</span><span class="badge">systemd</span><span class="badge">GitHub backup</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="section-head"><span class="kicker">Сценарий</span><h2>Как пользователь работает с ботом</h2></div>
+      <div class="grid-3">
+        <div class="card"><h3>1. Отправить /start</h3><p>Бот просит ссылку на Google Таблицу. Таблица должна быть доступна service account с правами редактора.</p></div>
+        <div class="card"><h3>2. Выбрать действие</h3><p>Доступны два режима: <span class="inline-code">Заполнять реестр</span> и <span class="inline-code">Сгенерировать паспорта</span>.</p></div>
+        <div class="card"><h3>3. Получить результат</h3><p>При генерации бот отправляет готовые DOCX-файлы или ZIP-архив прямо в окно Telegram.</p></div>
+      </div>
+      <div class="notice"><strong>Важно:</strong> если после перезапуска VPS старые кнопки в Telegram не реагируют, отправьте <span class="inline-code">/start</span>. Старые кнопки могут остаться от предыдущей сессии.</div>
+    </section>
+
+    <section class="section" id="requirements">
+      <div class="section-head"><span class="kicker">Что нужно заранее</span><h2>Минимальный набор для запуска</h2></div>
+      <div class="grid-3">
+        <div class="card"><h3>VPS</h3><p>Подойдёт обычный Ubuntu VPS с доступом по SSH. Бот запускается через <span class="inline-code">systemd</span> и продолжает работать после закрытия SSH.</p></div>
+        <div class="card"><h3>Telegram token</h3><p>Создаётся через <span class="inline-code">@BotFather</span>. Token не хранится в GitHub, а вводится при установке.</p></div>
+        <div class="card"><h3>Google JSON</h3><p>Нужен <span class="inline-code">google_service_account.json</span>. Его нельзя выкладывать в репозиторий или отправлять посторонним.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="install">
+      <div class="section-head"><span class="kicker">Новый VPS</span><h2>Разворачивание одной командой</h2><p>Команда скачивает install-скрипт из GitHub, устанавливает зависимости, создаёт виртуальное окружение, настраивает <span class="inline-code">.env</span>, принимает JSON-ключ и запускает службу.</p></div>
+      <div class="code-block"><div class="code-head"><span>Команда для чистого Ubuntu VPS</span><button class="copy-btn" data-copy="apt update && apt install -y curl git && curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh && REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh">Копировать</button></div><pre><code>apt update && apt install -y curl git && curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh && REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh</code></pre></div>
+      <div class="notice"><strong>Во время установки скрипт спросит:</strong> Telegram BOT_TOKEN, Telegram ID разрешённых пользователей и содержимое <span class="inline-code">google_service_account.json</span>. После вставки JSON нужно нажать Enter, затем Ctrl+D.</div>
+    </section>
+
+    <section class="section" id="manual-install">
+      <div class="section-head"><span class="kicker">Понятно по шагам</span><h2>Что делает команда установки</h2></div>
+      <ol class="steps">
+        <li>Устанавливает системные пакеты: Python, venv, pip, git, unzip, nano.</li>
+        <li>Клонирует репозиторий <span class="inline-code">RudlisMe/nku-registry-bot</span> в папку <span class="inline-code">/opt/nku_bot</span>.</li>
+        <li>Создаёт виртуальное окружение <span class="inline-code">/opt/nku_bot/.venv</span>.</li>
+        <li>Устанавливает зависимости из <span class="inline-code">requirements.txt</span>.</li>
+        <li>Создаёт <span class="inline-code">.env</span> и принимает секреты вручную.</li>
+        <li>Создаёт службу <span class="inline-code">nku-bot</span> и включает автозапуск.</li>
+      </ol>
+    </section>
+
+    <section class="section" id="commands">
+      <div class="section-head"><span class="kicker">Обслуживание</span><h2>Основные команды на VPS</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Задача</th><th>Команда</th></tr></thead><tbody>
+        <tr><td>Проверить статус</td><td><span class="inline-code">systemctl --no-pager status nku-bot</span></td></tr>
+        <tr><td>Перезапустить после правок</td><td><span class="inline-code">systemctl restart nku-bot</span></td></tr>
+        <tr><td>Остановить бота</td><td><span class="inline-code">systemctl stop nku-bot</span></td></tr>
+        <tr><td>Смотреть живые логи</td><td><span class="inline-code">journalctl -u nku-bot -f</span></td></tr>
+        <tr><td>Проверить файлы Git</td><td><span class="inline-code">cd /opt/nku_bot && git status</span></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="section" id="security">
+      <div class="section-head"><span class="kicker">Безопасность</span><h2>Что нельзя загружать в GitHub</h2></div>
+      <div class="folder-card"><div class="folder-title">Секреты и временные файлы</div><pre class="tree"><code>.env
+      google_service_account.json
+      .venv/
+      __pycache__/
+      generated_passports/
+      *.zip
+      *.bak*</code></pre></div>
+      <div class="notice"><strong>Рекомендация:</strong> если Telegram token или JSON-ключ были показаны в чате, логах или постороннем месте, лучше перевыпустить их и заменить на VPS.</div>
+    </section>
+
+    <footer class="footer">2026 I.C.</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>

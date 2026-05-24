@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Промты для продолжения разработки бота, скриптов и лендинга НКУ Automation." />
+  <title>Промты для доработок НКУ Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Промты и контекст</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a href="bot.html">Telegram-бот</a><a class="active" href="prompts.html">Промты</a><a href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Контекст для ChatGPT</div>
+        <h1>Промты для продолжения работы</h1>
+        <p class="lead">Этот раздел нужен, чтобы быстро ввести ChatGPT в курс проекта и продолжить доработку бота, локальных скриптов, шаблона паспорта или лендинга без повторного объяснения всей истории.</p>
+        <div class="hero-actions"><a class="btn primary" href="#main-prompt">Скопировать основной промт</a><a class="btn ghost" href="#rules">Правила доработок</a></div>
+      </div>
+      <div class="card">
+        <h3>Как использовать</h3>
+        <p>Скопируйте основной промт, вставьте его в новый чат ChatGPT и в последней строке допишите конкретную задачу: что именно нужно изменить, проверить или добавить.</p>
+        <div class="badges"><span class="badge">бот</span><span class="badge">VPS</span><span class="badge">Google Sheets</span><span class="badge">DOCX</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="main-prompt">
+      <div class="section-head"><span class="kicker">Основной промт</span><h2>Для нового чата или продолжения разработки</h2><p>Промт содержит текущую архитектуру проекта, правила безопасности и команды обслуживания.</p></div>
+      <div class="notice"><strong>Важно:</strong> перед отправкой промта не вставляйте в него Telegram token, <span class="inline-code">.env</span> или <span class="inline-code">google_service_account.json</span>. Для диагностики достаточно структуры файлов, логов без секретов и описания ошибки.</div>
+      <div class="code-block"><div class="code-head"><span>Промт для ChatGPT</span><button class="copy-btn" data-copy="Ты — ChatGPT, помоги продолжить разработку проекта НКУ Automation. Важно: не проси заново проходить настройку Google Cloud, если я не говорю, что ключи/доступы потеряны. Уже сделано следующее:
+
+1. Есть локальные Python-скрипты, которые можно запускать через консоль Windows/macOS:
+   - fill_registry_nku_Onln_v9.py — заполнение онлайн-реестра НКУ в Google Sheets;
+   - generate_passports_v7_Onln.py — генерация паспортов устройств по данным реестра;
+   - passport_template_v2.docx — шаблон паспорта.
+
+2. Дополнительно создан Telegram-бот для VPS. Он работает с той же Google Таблицей:
+   - после /start просит ссылку на Google Таблицу;
+   - проверяет доступ service account;
+   - показывает меню: «Заполнять реестр» или «Сгенерировать паспорта»;
+   - в режиме заполнения ведёт пользователя по шагам, близко к консольной логике;
+   - в режиме генерации показывает последнюю строку данных, предлагает последние 5 строк или ввод начальной строки;
+   - генерирует DOCX-паспорта и отправляет их в Telegram, при необходимости ZIP-архивом;
+   - кнопка «❌ Отмена» должна корректно прерывать сценарий;
+   - если после перезапуска старые кнопки Telegram не реагируют, рабочий сброс: /cancel и /start.
+
+3. Рабочая папка на VPS: /opt/nku_bot. Бот запускается как systemd-служба nku-bot. Основные команды:
+   - systemctl --no-pager status nku-bot
+   - systemctl restart nku-bot
+   - journalctl -u nku-bot -f
+   - cd /opt/nku_bot &amp;&amp; git status
+
+4. Код сохранён в GitHub-репозитории:
+   https://github.com/RudlisMe/nku-registry-bot
+   В репозиторий должны попадать только код, шаблоны и инструкции. Нельзя добавлять:
+   - .env
+   - google_service_account.json
+   - .venv/
+   - __pycache__/
+   - generated_passports/
+   - архивы, резервные копии, токены и приватные ключи.
+
+5. Для разворачивания на новом VPS подготовлен install_on_new_vps.sh. Команда установки из README:
+   apt update &amp;&amp; apt install -y curl git &amp;&amp; curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh &amp;&amp; REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh
+
+6. При дальнейших правках соблюдай правила:
+   - сохраняй совместимость локальных консольных скриптов Windows/macOS;
+   - не меняй философию консольного ввода без отдельного согласования;
+   - для новых версий файлов/скриптов добавляй новую версию в имени;
+   - для обновлений, связанных с онлайн/Google Sheets, используй приписку Onln;
+   - перед изменением логики сначала кратко опиши, какие файлы будут изменены;
+   - после изменений дай точные команды для загрузки/обновления на VPS;
+   - обязательно напомни проверить, что секреты не попали в git status.
+
+Моя задача сейчас: [здесь опиши, что нужно изменить в функционале бота, скриптов, шаблона паспорта или лендинга].">Копировать</button></div><pre><code>Ты — ChatGPT, помоги продолжить разработку проекта НКУ Automation. Важно: не проси заново проходить настройку Google Cloud, если я не говорю, что ключи/доступы потеряны. Уже сделано следующее:
+
+1. Есть локальные Python-скрипты, которые можно запускать через консоль Windows/macOS:
+   - fill_registry_nku_Onln_v9.py — заполнение онлайн-реестра НКУ в Google Sheets;
+   - generate_passports_v7_Onln.py — генерация паспортов устройств по данным реестра;
+   - passport_template_v2.docx — шаблон паспорта.
+
+2. Дополнительно создан Telegram-бот для VPS. Он работает с той же Google Таблицей:
+   - после /start просит ссылку на Google Таблицу;
+   - проверяет доступ service account;
+   - показывает меню: «Заполнять реестр» или «Сгенерировать паспорта»;
+   - в режиме заполнения ведёт пользователя по шагам, близко к консольной логике;
+   - в режиме генерации показывает последнюю строку данных, предлагает последние 5 строк или ввод начальной строки;
+   - генерирует DOCX-паспорта и отправляет их в Telegram, при необходимости ZIP-архивом;
+   - кнопка «❌ Отмена» должна корректно прерывать сценарий;
+   - если после перезапуска старые кнопки Telegram не реагируют, рабочий сброс: /cancel и /start.
+
+3. Рабочая папка на VPS: /opt/nku_bot. Бот запускается как systemd-служба nku-bot. Основные команды:
+   - systemctl --no-pager status nku-bot
+   - systemctl restart nku-bot
+   - journalctl -u nku-bot -f
+   - cd /opt/nku_bot &amp;&amp; git status
+
+4. Код сохранён в GitHub-репозитории:
+   https://github.com/RudlisMe/nku-registry-bot
+   В репозиторий должны попадать только код, шаблоны и инструкции. Нельзя добавлять:
+   - .env
+   - google_service_account.json
+   - .venv/
+   - __pycache__/
+   - generated_passports/
+   - архивы, резервные копии, токены и приватные ключи.
+
+5. Для разворачивания на новом VPS подготовлен install_on_new_vps.sh. Команда установки из README:
+   apt update &amp;&amp; apt install -y curl git &amp;&amp; curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh &amp;&amp; REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh
+
+6. При дальнейших правках соблюдай правила:
+   - сохраняй совместимость локальных консольных скриптов Windows/macOS;
+   - не меняй философию консольного ввода без отдельного согласования;
+   - для новых версий файлов/скриптов добавляй новую версию в имени;
+   - для обновлений, связанных с онлайн/Google Sheets, используй приписку Onln;
+   - перед изменением логики сначала кратко опиши, какие файлы будут изменены;
+   - после изменений дай точные команды для загрузки/обновления на VPS;
+   - обязательно напомни проверить, что секреты не попали в git status.
+
+Моя задача сейчас: [здесь опиши, что нужно изменить в функционале бота, скриптов, шаблона паспорта или лендинга].</code></pre></div>
+    </section>
+
+    <section class="section" id="rules">
+      <div class="section-head"><span class="kicker">Правила</span><h2>Что учитывать при новых правках</h2></div>
+      <div class="grid-3">
+        <div class="card"><h3>Не ломать локальный режим</h3><p>Локальные консольные скрипты для Windows/macOS остаются рабочим сценарием. Информацию о них в лендинге менять не нужно без отдельной задачи.</p></div>
+        <div class="card"><h3>Не публиковать секреты</h3><p>Файлы <span class="inline-code">.env</span> и <span class="inline-code">google_service_account.json</span> не должны попадать в GitHub, архивы для передачи или публичные инструкции.</p></div>
+        <div class="card"><h3>Давать команды обновления</h3><p>После каждой доработки нужны короткие команды: как загрузить файлы на VPS, перезапустить службу и проверить статус.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">2026 I.C.</footer>
+  </main>
+  <div class="toast" id="toast">Скопировано</div>
+  <script src="script.js"></script>
+</body>
+</html>

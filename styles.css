@@ -11,6 +11,8 @@
   --accent-2: #7c5cff;
   --accent-3: #29d391;
   --warn: #ffbd4a;
+  --pink: #ff5fa2;
+  --pink-soft: rgba(255, 95, 162, .14);
   --shadow: 0 24px 70px rgba(0,0,0,.34);
   --code-bg: #071121;
   --code-text: #dce8ff;
@@ -35,6 +37,7 @@ html[data-theme="light"] {
   --svg-panel-b: #c8d6e8;
   --svg-stroke: #6680a5;
   --svg-slot: #f7fbff;
+  --pink-soft: rgba(236, 72, 153, .10);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -88,7 +91,27 @@ p { color: var(--muted); line-height: 1.7; }
 .card p { margin-bottom: 0; }
 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
 .badge { padding: 6px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: color-mix(in srgb, var(--panel-strong) 70%, transparent); font-weight: 700; font-size: 12px; }
-.notice { padding: 16px 18px; border-radius: 18px; background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); color: var(--muted); margin: 16px 0; }
+.notice {
+  position: relative;
+  padding: 17px 18px 17px 22px;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--pink) 28%, transparent), transparent 46%),
+    color-mix(in srgb, var(--pink) 8%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--pink) 34%, var(--line));
+  color: var(--muted);
+  margin: 16px 0;
+  box-shadow: inset 5px 0 0 color-mix(in srgb, var(--pink) 78%, white 6%), 0 16px 42px rgba(0,0,0,.10);
+}
+.notice::before {
+  content: "";
+  position: absolute;
+  left: 14px; top: 16px; bottom: 16px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff8ac1, var(--pink));
+  opacity: .95;
+}
 .notice strong { color: var(--text); }
 .folder-card { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; margin: 16px 0; }
 .folder-title { padding: 14px 18px; border-bottom: 1px solid var(--line); color: var(--muted); font-weight: 800; }

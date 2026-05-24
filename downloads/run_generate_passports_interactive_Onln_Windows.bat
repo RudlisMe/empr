@@ -1,44 +1,43 @@
 @echo off
+chcp 65001 >nul
 setlocal EnableExtensions EnableDelayedExpansion
 
 REM ==========================================================
-REM NKU passport generator launcher for Windows
-REM Put this BAT file in the same folder with:
+REM Интерактивный запуск генератора паспортов НКУ для Windows
+REM Файл должен лежать в той же папке, что и:
 REM - generate_passports_v7_Onln.py
 REM - passport_template_v2.docx
-REM - google_service_account.json for online mode
-REM - one .xlsx file for local mode
+REM - google_service_account.json для онлайн-режима
+REM - Excel-файл для локального режима, если запускается локально
 REM ==========================================================
 
 cd /d "%~dp0"
 
-set "SCRIPT_NAME=generate_passports_v7_Onln.py"
-set "TEMPLATE_NAME=passport_template_v2.docx"
-
 echo ==============================================
-echo  NKU Passport Generator
+echo  Генератор паспортов НКУ
 echo ==============================================
 echo.
-echo Work folder:
+echo Папка запуска:
 echo %CD%
 echo.
 
-if not exist "%SCRIPT_NAME%" (
-    echo ERROR: %SCRIPT_NAME% not found near this BAT file.
-    echo Put this BAT file in the same folder with the Python script.
+if not exist "generate_passports_v7_Onln.py" (
+    echo ОШИБКА: generate_passports_v7_Onln.py не найден рядом с этим BAT-файлом.
+    echo Положите BAT-файл в папку со скриптом.
     echo.
     pause
     exit /b 1
 )
 
-if not exist "%TEMPLATE_NAME%" (
-    echo ERROR: %TEMPLATE_NAME% not found near this BAT file.
-    echo Put the Word template near the Python script.
+if not exist "passport_template_v2.docx" (
+    echo ОШИБКА: passport_template_v2.docx не найден рядом с этим BAT-файлом.
+    echo Положите Word-шаблон рядом со скриптом.
     echo.
     pause
     exit /b 1
 )
 
+REM --- Поиск Python ---
 set "PYTHON_CMD="
 
 where py >nul 2>nul
@@ -52,26 +51,25 @@ if %errorlevel%==0 (
 )
 
 if "%PYTHON_CMD%"=="" (
-    echo ERROR: Python was not found.
-    echo Install Python 3 and enable Add Python to PATH during installation.
+    echo ОШИБКА: Python не найден.
+    echo Установите Python 3 и добавьте его в PATH.
     echo.
     pause
     exit /b 1
 )
 
-echo Python command: %PYTHON_CMD%
+echo Найден Python: %PYTHON_CMD%
 echo.
 
+REM --- Создание .venv при необходимости ---
 if not exist ".venv\Scripts\python.exe" (
-    echo .venv was not found.
-    echo Creating .venv in this folder...
+    echo Виртуальное окружение .venv не найдено.
+    echo Создаю .venv...
     %PYTHON_CMD% -m venv .venv
 
     if errorlevel 1 (
         echo.
-        echo ERROR: Could not create .venv.
-        echo Check Python installation.
-        echo.
+        echo ОШИБКА: не удалось создать виртуальное окружение .venv.
         pause
         exit /b 1
     )
@@ -79,77 +77,106 @@ if not exist ".venv\Scripts\python.exe" (
 
 set "VENV_PY=.venv\Scripts\python.exe"
 
-echo Upgrading pip...
+echo Обновляю pip...
 "%VENV_PY%" -m pip install --upgrade pip
 
 echo.
-echo Installing/checking dependencies...
-"%VENV_PY%" -m pip install python-docx openpyxl gspread google-auth
+echo Проверка и установка зависимостей...
+
+set "CHECK_DEPS_FILE=%TEMP%\check_nku_passport_deps.py"
+
+> "%CHECK_DEPS_FILE%" echo import importlib
+>> "%CHECK_DEPS_FILE%" echo import subprocess
+>> "%CHECK_DEPS_FILE%" echo import sys
+>> "%CHECK_DEPS_FILE%" echo.
+>> "%CHECK_DEPS_FILE%" echo packages = {
+>> "%CHECK_DEPS_FILE%" echo     "docx": "python-docx",
+>> "%CHECK_DEPS_FILE%" echo     "openpyxl": "openpyxl",
+>> "%CHECK_DEPS_FILE%" echo     "gspread": "gspread",
+>> "%CHECK_DEPS_FILE%" echo     "google.oauth2": "google-auth",
+>> "%CHECK_DEPS_FILE%" echo }
+>> "%CHECK_DEPS_FILE%" echo.
+>> "%CHECK_DEPS_FILE%" echo missing = []
+>> "%CHECK_DEPS_FILE%" echo.
+>> "%CHECK_DEPS_FILE%" echo for import_name, pip_name in packages.items():
+>> "%CHECK_DEPS_FILE%" echo     try:
+>> "%CHECK_DEPS_FILE%" echo         importlib.import_module(import_name)
+>> "%CHECK_DEPS_FILE%" echo     except ImportError:
+>> "%CHECK_DEPS_FILE%" echo         missing.append(pip_name)
+>> "%CHECK_DEPS_FILE%" echo.
+>> "%CHECK_DEPS_FILE%" echo if missing:
+>> "%CHECK_DEPS_FILE%" echo     print("Не хватает зависимостей: " + ", ".join(missing))
+>> "%CHECK_DEPS_FILE%" echo     print("Устанавливаю...")
+>> "%CHECK_DEPS_FILE%" echo     subprocess.check_call([sys.executable, "-m", "pip", "install"] + missing)
+>> "%CHECK_DEPS_FILE%" echo else:
+>> "%CHECK_DEPS_FILE%" echo     print("Все зависимости найдены.")
+
+"%VENV_PY%" "%CHECK_DEPS_FILE%"
 
 if errorlevel 1 (
     echo.
-    echo ERROR: Could not install dependencies.
-    echo Check internet connection and Python/pip installation.
-    echo.
+    echo ОШИБКА: не удалось проверить или установить зависимости.
+    if exist "%CHECK_DEPS_FILE%" del "%CHECK_DEPS_FILE%" >nul 2>nul
     pause
     exit /b 1
 )
 
+if exist "%CHECK_DEPS_FILE%" del "%CHECK_DEPS_FILE%" >nul 2>nul
+
 echo.
-echo Select mode:
-echo 1 - Online Google Sheets
-echo 2 - Local Excel file near the script
+echo Выберите режим работы:
+echo 1 - Онлайн Google Таблица
+echo 2 - Локальный Excel-файл рядом со скриптом
 echo.
 
 :choose_mode
-set /p MODE="Enter 1 or 2 and press Enter: "
+set /p MODE="Введите 1 или 2 и нажмите Enter: "
 
 if "%MODE%"=="1" goto online_mode
 if "%MODE%"=="2" goto local_mode
 
-echo Wrong input. Enter 1 or 2.
+echo Неверный ввод. Нужно ввести 1 или 2.
 goto choose_mode
 
 :online_mode
 echo.
 if not exist "google_service_account.json" (
-    echo ERROR: google_service_account.json not found near this BAT file.
-    echo This file is required for Google Sheets online mode.
+    echo ОШИБКА: google_service_account.json не найден рядом с этим BAT-файлом.
+    echo Он нужен для онлайн-режима Google Sheets.
     echo.
     pause
     exit /b 1
 )
 
-echo Paste Google Sheet URL.
-echo Example:
+echo Вставьте ссылку на Google Таблицу.
+echo Пример:
 echo https://docs.google.com/spreadsheets/d/.../edit?gid=...
 echo.
-set /p SHEET_URL="URL: "
+set /p SHEET_URL="Ссылка: "
 
 if "%SHEET_URL%"=="" (
     echo.
-    echo ERROR: URL is empty.
-    echo.
+    echo ОШИБКА: ссылка не введена.
     pause
     exit /b 1
 )
 
 echo.
-echo Starting online mode...
+echo Запускаю онлайн-режим...
 echo.
-"%VENV_PY%" "%SCRIPT_NAME%" "%SHEET_URL%"
+"%VENV_PY%" generate_passports_v7_Onln.py "%SHEET_URL%"
 goto finish
 
 :local_mode
 echo.
-echo Starting local Excel mode.
-echo The script will search for an Excel file near itself.
+echo Запускаю локальный режим.
+echo Скрипт будет искать Excel-файл рядом с собой, как раньше.
 echo.
-"%VENV_PY%" "%SCRIPT_NAME%"
+"%VENV_PY%" generate_passports_v7_Onln.py
 goto finish
 
 :finish
 echo.
-echo Done.
+echo Работа завершена.
 pause
 exit /b 0
