@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Инструкция по установке Telegram-бота НКУ на VPS и работе с онлайн-реестром." />
-  <title>Telegram-бот НКУ на VPS</title>
+  <meta name="description" content="Инструкция для @EMPR_smetaBot: загрузка смет, получение финального Excel, пересчёт изменённой финальной сметы и создание онлайн-ТКП." />
+  <title>@EMPR_smetaBot: сметы и онлайн-ТКП</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
@@ -12,7 +12,7 @@
 <body>
   <div class="noise" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Telegram-бот и VPS</small></span></a>
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>НКУ Automation</strong><small>Сметы и онлайн-ТКП</small></span></a>
     <nav class="topnav"><a href="index.html">Главная</a><a href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a class="active" href="bot.html">Telegram-бот</a><a href="prompts.html">Промты</a><a href="files.html">Файлы</a></nav>
     <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
   </header>
@@ -20,76 +20,84 @@
   <main class="layout">
     <section class="hero">
       <div>
-        <div class="eyebrow">Telegram • VPS • Google Sheets</div>
-        <h1>Telegram-бот для реестра и паспортов НКУ</h1>
-        <p class="lead">Бот работает на VPS как системная служба. После команды <span class="inline-code">/start</span> он просит ссылку на Google Таблицу, затем предлагает: заполнить реестр или сгенерировать паспорта по уже внесённым строкам.</p>
-        <div class="hero-actions"><a class="btn primary" href="#install">Установка на VPS</a><a class="btn ghost" href="#commands">Команды обслуживания</a></div>
+        <div class="eyebrow">Telegram • Excel • Google Sheets</div>
+        <h1>@EMPR_smetaBot для смет и онлайн-ТКП</h1>
+        <p class="lead">Бот принимает сметы в Excel или ZIP, объединяет их в один финальный файл, помогает пересчитать уже отредактированную финальную смету и создаёт онлайн-ТКП в Google Sheets.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener">Открыть бота</a>
+          <a class="btn ghost" href="#how-it-works">Как пользоваться</a>
+        </div>
       </div>
       <div class="card">
-        <h3>Что умеет бот</h3>
-        <p>Заполняет онлайн-реестр, генерирует DOCX-паспорта, отправляет файлы в Telegram и возвращает пользователя в меню действий.</p>
-        <div class="badges"><span class="badge">nku-registry-bot</span><span class="badge">systemd</span><span class="badge">GitHub backup</span></div>
+        <h3>Коротко</h3>
+        <p>Отправьте файл с исходными сметами, получите <span class="inline-code">final_result</span>, проверьте его и при необходимости создайте онлайн-ТКП прямо из Telegram.</p>
+        <div class="badges"><span class="badge">.xls</span><span class="badge">.xlsx</span><span class="badge">.xlsm</span><span class="badge">.zip</span><span class="badge">Google Sheets</span></div>
       </div>
     </section>
 
     <section class="section" id="how-it-works">
-      <div class="section-head"><span class="kicker">Сценарий</span><h2>Как пользователь работает с ботом</h2></div>
+      <div class="section-head"><span class="kicker">Основной сценарий</span><h2>Как получить финальную смету</h2><p>Для обычной работы не нужно запускать скрипты вручную: весь процесс проходит в переписке с ботом.</p></div>
       <div class="grid-3">
-        <div class="card"><h3>1. Отправить /start</h3><p>Бот просит ссылку на Google Таблицу. Таблица должна быть доступна service account с правами редактора.</p></div>
-        <div class="card"><h3>2. Выбрать действие</h3><p>Доступны два режима: <span class="inline-code">Заполнять реестр</span> и <span class="inline-code">Сгенерировать паспорта</span>.</p></div>
-        <div class="card"><h3>3. Получить результат</h3><p>При генерации бот отправляет готовые DOCX-файлы или ZIP-архив прямо в окно Telegram.</p></div>
+        <div class="card"><h3>1. Подготовьте файл</h3><p>Можно отправить одну смету в формате <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> или ZIP-архив с несколькими сметами.</p></div>
+        <div class="card"><h3>2. Отправьте в Telegram</h3><p>Откройте <span class="inline-code">@EMPR_smetaBot</span>, нажмите <span class="inline-code">/start</span> и загрузите файл как документ.</p></div>
+        <div class="card"><h3>3. Получите результат</h3><p>Бот сформирует новый файл <span class="inline-code">final_result_дата_время.xlsx</span> и отправит его обратно в чат.</p></div>
       </div>
-      <div class="notice"><strong>Важно:</strong> если после перезапуска VPS старые кнопки в Telegram не реагируют, отправьте <span class="inline-code">/start</span>. Старые кнопки могут остаться от предыдущей сессии.</div>
+      <div class="notice"><strong>Совет:</strong> отправляйте файл именно как документ, а не как изображение или пересланный предпросмотр. Так Telegram не меняет исходный Excel.</div>
     </section>
 
-    <section class="section" id="requirements">
-      <div class="section-head"><span class="kicker">Что нужно заранее</span><h2>Минимальный набор для запуска</h2></div>
-      <div class="grid-3">
-        <div class="card"><h3>VPS</h3><p>Подойдёт обычный Ubuntu VPS с доступом по SSH. Бот запускается через <span class="inline-code">systemd</span> и продолжает работать после закрытия SSH.</p></div>
-        <div class="card"><h3>Telegram token</h3><p>Создаётся через <span class="inline-code">@BotFather</span>. Token не хранится в GitHub, а вводится при установке.</p></div>
-        <div class="card"><h3>Google JSON</h3><p>Нужен <span class="inline-code">google_service_account.json</span>. Его нельзя выкладывать в репозиторий или отправлять посторонним.</p></div>
-      </div>
-    </section>
-
-    <section class="section" id="install">
-      <div class="section-head"><span class="kicker">Новый VPS</span><h2>Разворачивание одной командой</h2><p>Команда скачивает install-скрипт из GitHub, устанавливает зависимости, создаёт виртуальное окружение, настраивает <span class="inline-code">.env</span>, принимает JSON-ключ и запускает службу.</p></div>
-      <div class="code-block"><div class="code-head"><span>Команда для чистого Ubuntu VPS</span><button class="copy-btn" data-copy="apt update && apt install -y curl git && curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh && REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh">Копировать</button></div><pre><code>apt update && apt install -y curl git && curl -fsSL https://raw.githubusercontent.com/RudlisMe/nku-registry-bot/main/install_on_new_vps.sh -o /tmp/install_nku_bot.sh && REPO_URL=https://github.com/RudlisMe/nku-registry-bot.git bash /tmp/install_nku_bot.sh</code></pre></div>
-      <div class="notice"><strong>Во время установки скрипт спросит:</strong> Telegram BOT_TOKEN, Telegram ID разрешённых пользователей и содержимое <span class="inline-code">google_service_account.json</span>. После вставки JSON нужно нажать Enter, затем Ctrl+D.</div>
-    </section>
-
-    <section class="section" id="manual-install">
-      <div class="section-head"><span class="kicker">Понятно по шагам</span><h2>Что делает команда установки</h2></div>
-      <ol class="steps">
-        <li>Устанавливает системные пакеты: Python, venv, pip, git, unzip, nano.</li>
-        <li>Клонирует репозиторий <span class="inline-code">RudlisMe/nku-registry-bot</span> в папку <span class="inline-code">/opt/nku_bot</span>.</li>
-        <li>Создаёт виртуальное окружение <span class="inline-code">/opt/nku_bot/.venv</span>.</li>
-        <li>Устанавливает зависимости из <span class="inline-code">requirements.txt</span>.</li>
-        <li>Создаёт <span class="inline-code">.env</span> и принимает секреты вручную.</li>
-        <li>Создаёт службу <span class="inline-code">nku-bot</span> и включает автозапуск.</li>
-      </ol>
-    </section>
-
-    <section class="section" id="commands">
-      <div class="section-head"><span class="kicker">Обслуживание</span><h2>Основные команды на VPS</h2></div>
-      <div class="table-wrap"><table><thead><tr><th>Задача</th><th>Команда</th></tr></thead><tbody>
-        <tr><td>Проверить статус</td><td><span class="inline-code">systemctl --no-pager status nku-bot</span></td></tr>
-        <tr><td>Перезапустить после правок</td><td><span class="inline-code">systemctl restart nku-bot</span></td></tr>
-        <tr><td>Остановить бота</td><td><span class="inline-code">systemctl stop nku-bot</span></td></tr>
-        <tr><td>Смотреть живые логи</td><td><span class="inline-code">journalctl -u nku-bot -f</span></td></tr>
-        <tr><td>Проверить файлы Git</td><td><span class="inline-code">cd /opt/nku_bot && git status</span></td></tr>
+    <section class="section" id="result-file">
+      <div class="section-head"><span class="kicker">Что внутри</span><h2>Листы финального Excel</h2><p>Финальный файл собирает исходные позиции и производные отчёты в одной книге.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Лист</th><th>Для чего нужен</th></tr></thead><tbody>
+        <tr><td><span class="inline-code">Сметы</span></td><td>Основной лист с позициями по шкафам. Его можно вручную проверить и аккуратно поправить перед пересчётом.</td></tr>
+        <tr><td><span class="inline-code">Итоги по шкафам</span></td><td>Суммы по каждому шкафу без НДС и с НДС.</td></tr>
+        <tr><td><span class="inline-code">Сроки поставки</span></td><td>Сводка по позициям со сроками поставки и ссылками на строки листа <span class="inline-code">Сметы</span>.</td></tr>
+        <tr><td><span class="inline-code">Аналитика производителей</span></td><td>Сводка по производителям, количеству позиций и суммам.</td></tr>
+        <tr><td><span class="inline-code">Закупочная ведомость</span></td><td>Статичная закупочная таблица с агрегированными товарами, количеством, ценами и полями для ручного заполнения.</td></tr>
       </tbody></table></div>
     </section>
 
-    <section class="section" id="security">
-      <div class="section-head"><span class="kicker">Безопасность</span><h2>Что нельзя загружать в GitHub</h2></div>
-      <div class="folder-card"><div class="folder-title">Секреты и временные файлы</div><pre class="tree"><code>.env
-      google_service_account.json
-      .venv/
-      __pycache__/
-      generated_passports/
-      *.zip
-      *.bak*</code></pre></div>
-      <div class="notice"><strong>Рекомендация:</strong> если Telegram token или JSON-ключ были показаны в чате, логах или постороннем месте, лучше перевыпустить их и заменить на VPS.</div>
+    <section class="section" id="recalculate">
+      <div class="section-head"><span class="kicker">Если смету правили вручную</span><h2>Пересчёт готового final_result</h2><p>Если вы изменили лист <span class="inline-code">Сметы</span> в уже созданном финальном файле, отправьте этот файл боту повторно. Бот распознаёт финальную смету по структуре и предлагает пересчитать её.</p></div>
+      <div class="grid-3">
+        <div class="card"><h3>Источник данных</h3><p>При пересчёте бот берёт актуальные строки именно с листа <span class="inline-code">Сметы</span>, включая изменённые количества, цены, производителей и сроки.</p></div>
+        <div class="card"><h3>Что обновляется</h3><p>Заново создаются листы итогов, сроков поставки, аналитики производителей и закупочной ведомости.</p></div>
+        <div class="card"><h3>Что сохраняется</h3><p>Лист <span class="inline-code">Сметы</span> сохраняется как есть. В новом файле точечно обновляются только формулы строки <span class="inline-code">Всего</span> в колонках J/K.</p></div>
+      </div>
+      <div class="notice"><strong>Важно:</strong> не переименовывайте лист <span class="inline-code">Сметы</span> и критичные заголовки колонок. Если структура повреждена, бот не будет делать некорректный пересчёт и попросит проверить файл.</div>
+    </section>
+
+    <section class="section" id="online-tkp">
+      <div class="section-head"><span class="kicker">Google Sheets</span><h2>Создание онлайн-ТКП</h2><p>После формирования или пересчёта финального Excel бот предлагает создать онлайн-ТКП. Ссылка на Google Таблицу приходит в Telegram.</p></div>
+      <div class="grid-3">
+        <div class="card"><h3>Обычная онлайн-ТКП</h3><p>Основная рабочая кнопка создаёт Google Sheets по действующему шаблону и заполняет его данными из финального Excel.</p></div>
+        <div class="card"><h3>Онлайн-ТКП v2</h3><p>Если в меню есть отдельная кнопка v2, это тестовая версия формы. Её используют для проверки новых формул и сравнения результата со стандартной ТКП.</p></div>
+        <div class="card"><h3>После пересчёта</h3><p>Если сначала пересчитать финальную смету, онлайн-ТКП будет создаваться уже из нового пересчитанного файла.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="safe-editing">
+      <div class="section-head"><span class="kicker">Правки в Excel</span><h2>Как редактировать финальный файл безопасно</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Можно</h3>
+          <p>Менять количества, цены, сроки поставки, производителя, артикул и код товара в товарных строках листа <span class="inline-code">Сметы</span>. Можно добавить товарную строку внутри блока шкафа, если сохранить структуру колонок.</p>
+        </div>
+        <div class="card">
+          <h3>Не стоит</h3>
+          <p>Удалять строки <span class="inline-code">Примечание:</span> и <span class="inline-code">Всего</span>, переименовывать листы, менять критичные заголовки или переносить товары в произвольные места вне блока шкафа.</p>
+        </div>
+      </div>
+      <div class="notice"><strong>Если сомневаетесь:</strong> сохраните копию файла перед ручными правками. Бот не меняет отправленный исходник, а возвращает новый файл с новым именем.</div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="section-head"><span class="kicker">Частые вопросы</span><h2>Что делать, если что-то пошло не так</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Ситуация</th><th>Что проверить</th></tr></thead><tbody>
+        <tr><td>Бот не видит файл</td><td>Проверьте, что файл отправлен как документ и имеет поддерживаемое расширение.</td></tr>
+        <tr><td>Пересчёт не запускается</td><td>Убедитесь, что это финальный файл с листом <span class="inline-code">Сметы</span> и сохранёнными заголовками товарной таблицы.</td></tr>
+        <tr><td>Нет кнопки онлайн-ТКП</td><td>Сначала дождитесь готового <span class="inline-code">final_result</span>. Для ранее созданного файла отправьте его боту повторно.</td></tr>
+        <tr><td>v2-кнопка отсутствует</td><td>Это нормально: v2 показывается только когда тестовый режим включён администратором.</td></tr>
+      </tbody></table></div>
     </section>
 
     <footer class="footer">2026 I.C.</footer>

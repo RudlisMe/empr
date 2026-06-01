@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Лендинг и инструкции для генерации паспортов НКУ и заполнения реестра НКУ." />
-  <title>НКУ: паспорта и реестр</title>
+  <meta name="description" content="Лендинг и инструкции для генерации паспортов НКУ, заполнения реестра НКУ и работы с @EMPR_smetaBot для смет и онлайн-ТКП." />
+  <title>НКУ и EMPR: паспорта, реестр, сметы</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -32,8 +32,8 @@
     <section class="hero">
       <div class="hero-copy">
         <div class="eyebrow">Актуальные ревизии скриптов</div>
-        <h1>Паспорта, реестр НКУ и Telegram-бот для работы с Google Таблицей</h1>
-        <p class="lead">Локальные Python-скрипты по-прежнему можно запускать через консоль на Windows/macOS. Дополнительно доступен Telegram-бот на VPS: он заполняет онлайн-реестр и генерирует паспорта из Google Таблицы прямо из чата.</p>
+        <h1>Паспорта, реестр НКУ и @EMPR_smetaBot для смет</h1>
+        <p class="lead">Локальные Python-скрипты по-прежнему можно запускать через консоль на Windows/macOS. Дополнительно доступен Telegram-бот: он принимает сметы в Excel или ZIP, собирает финальный файл, пересчитывает изменённый final_result и создаёт онлайн-ТКП.</p>
         <div class="hero-actions">
           <a class="btn primary" href="passports.html">Генерация паспортов</a>
           <a class="btn green" href="registry.html">Заполнение реестра</a>
@@ -97,9 +97,9 @@
           <div class="actions"><a class="btn green" href="registry.html">Открыть инструкцию</a></div>
         </article>
         <article class="card">
-          <h3>Telegram-бот на VPS</h3>
-          <p>Работа с онлайн-реестром из Telegram: заполнение строк, генерация паспортов и отправка готовых DOCX/ZIP в чат.</p>
-          <div class="badges"><span class="badge">Telegram</span><span class="badge">VPS</span><span class="badge">Google Sheets</span></div>
+          <h3>@EMPR_smetaBot</h3>
+          <p>Работа со сметами из Telegram: финальный Excel, пересчёт готового final_result и создание онлайн-ТКП в Google Sheets.</p>
+          <div class="badges"><span class="badge">Telegram</span><span class="badge">Excel</span><span class="badge">Google Sheets</span></div>
           <div class="actions"><a class="btn primary" href="bot.html">Открыть инструкцию</a></div>
         </article>
       </div>
@@ -109,13 +109,13 @@
     <section class="section">
       <div class="section-head">
         <span class="kicker">Telegram-бот</span>
-        <h2>Один интерфейс для реестра и паспортов</h2>
-        <p>Бот запускается на VPS как служба. Пользователь отправляет ссылку на Google Таблицу, выбирает действие и работает без запуска консоли на своём компьютере.</p>
+        <h2>Один интерфейс для смет и онлайн-ТКП</h2>
+        <p>Пользователь отправляет сметы прямо в Telegram, получает готовый Excel, при необходимости пересчитывает его после ручных правок и создаёт онлайн-ТКП без запуска консоли на своём компьютере.</p>
       </div>
       <div class="grid-3">
-        <div class="card"><h3>Заполнение реестра</h3><p>Бот ведёт по шагам, формирует тип изделия, записывает строку и возвращает в меню действий.</p></div>
-        <div class="card"><h3>Генерация паспортов</h3><p>Можно сгенерировать паспорта по последним строкам или указать начальную строку реестра.</p></div>
-        <div class="card"><h3>Разворачивание</h3><p>Код хранится в GitHub, на новом VPS установка выполняется одной командой и интерактивно запрашивает секреты.</p></div>
+        <div class="card"><h3>Финальная смета</h3><p>Бот принимает <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и <span class="inline-code">.zip</span>, затем возвращает <span class="inline-code">final_result</span>.</p></div>
+        <div class="card"><h3>Пересчёт</h3><p>Если лист <span class="inline-code">Сметы</span> изменён вручную, бот пересоздаёт производные листы и сохраняет новый файл.</p></div>
+        <div class="card"><h3>Онлайн-ТКП</h3><p>По готовому файлу создаётся Google Sheets ТКП. Тестовая v2-форма доступна отдельной кнопкой, если режим включён.</p></div>
       </div>
       <div class="actions"><a class="btn primary" href="bot.html">Инструкция по боту</a></div>
     </section>
