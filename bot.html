@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Инструкция для @EMPR_smetaBot: загрузка смет, получение финального Excel, пересчёт изменённой финальной сметы и создание онлайн-ТКП." />
-  <title>@EMPR_smetaBot: сметы и онлайн-ТКП</title>
+  <meta name="description" content="Пользовательская справка @EMPR_smetaBot: загрузка смет, final_result, пересчёт, закупочная ведомость и онлайн-ТКП." />
+  <title>@EMPR_smetaBot: справка для пользователей</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
@@ -18,85 +18,115 @@
   </header>
 
   <main class="layout">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Telegram • Excel • Google Sheets</div>
-        <h1>@EMPR_smetaBot для смет и онлайн-ТКП</h1>
-        <p class="lead">Бот принимает сметы в Excel или ZIP, объединяет их в один финальный файл, помогает пересчитать уже отредактированную финальную смету и создаёт онлайн-ТКП в Google Sheets.</p>
+    <section class="wiki-hero">
+      <div class="wiki-hero-copy">
+        <div class="eyebrow">Справка пользователя</div>
+        <h1>@EMPR_smetaBot</h1>
+        <p class="lead">Telegram-бот для обработки смет: принимает Excel или ZIP, собирает финальный файл, пересчитывает готовый final_result после ручных правок и создаёт онлайн-ТКП в Google Sheets.</p>
         <div class="hero-actions">
           <a class="btn primary" href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener">Открыть бота</a>
-          <a class="btn ghost" href="#how-it-works">Как пользоваться</a>
+          <a class="btn ghost" href="#quick-start">Начать с инструкции</a>
         </div>
       </div>
-      <div class="card">
-        <h3>Коротко</h3>
-        <p>Отправьте файл с исходными сметами, получите <span class="inline-code">final_result</span>, проверьте его и при необходимости создайте онлайн-ТКП прямо из Telegram.</p>
-        <div class="badges"><span class="badge">.xls</span><span class="badge">.xlsx</span><span class="badge">.xlsm</span><span class="badge">.zip</span><span class="badge">Google Sheets</span></div>
-      </div>
+      <nav class="wiki-quick-index" aria-label="Разделы инструкции">
+        <a href="#quick-start"><span>01</span><strong>Быстрый старт</strong><small>Как получить final_result</small></a>
+        <a href="#result-file"><span>02</span><strong>Финальный Excel</strong><small>Какие листы создаёт бот</small></a>
+        <a href="#recalculate"><span>03</span><strong>Пересчёт</strong><small>Что делать после ручных правок</small></a>
+        <a href="#online-tkp"><span>04</span><strong>Онлайн-ТКП</strong><small>Google Sheets v1/v2</small></a>
+        <a href="#safe-editing"><span>05</span><strong>Безопасные правки</strong><small>Что можно менять в Excel</small></a>
+        <a href="#faq"><span>06</span><strong>FAQ</strong><small>Частые ситуации</small></a>
+      </nav>
     </section>
 
-    <section class="section" id="how-it-works">
-      <div class="section-head"><span class="kicker">Основной сценарий</span><h2>Как получить финальную смету</h2><p>Для обычной работы не нужно запускать скрипты вручную: весь процесс проходит в переписке с ботом.</p></div>
-      <div class="grid-3">
-        <div class="card"><h3>1. Подготовьте файл</h3><p>Можно отправить одну смету в формате <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> или ZIP-архив с несколькими сметами.</p></div>
-        <div class="card"><h3>2. Отправьте в Telegram</h3><p>Откройте <span class="inline-code">@EMPR_smetaBot</span>, нажмите <span class="inline-code">/start</span> и загрузите файл как документ.</p></div>
-        <div class="card"><h3>3. Получите результат</h3><p>Бот сформирует новый файл <span class="inline-code">final_result_дата_время.xlsx</span> и отправит его обратно в чат.</p></div>
-      </div>
-      <div class="notice"><strong>Совет:</strong> отправляйте файл именно как документ, а не как изображение или пересланный предпросмотр. Так Telegram не меняет исходный Excel.</div>
+    <section class="section" id="quick-start">
+      <div class="section-head"><span class="kicker">01. Быстрый старт</span><h2>Как получить финальную смету</h2><p>Весь основной процесс проходит в Telegram. Скрипты на компьютере пользователя запускать не нужно.</p></div>
+      <ol class="flow-list">
+        <li><strong>Подготовьте файл.</strong> Поддерживаются <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архив с несколькими Excel-сметами.</li>
+        <li><strong>Отправьте файл как документ.</strong> Откройте <span class="inline-code">@EMPR_smetaBot</span>, нажмите <span class="inline-code">/start</span> и загрузите файл в чат.</li>
+        <li><strong>Дождитесь обработки.</strong> Бот проверит файл, соберёт данные и вернёт <span class="inline-code">final_result_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li><strong>Проверьте результат.</strong> Откройте лист <span class="inline-code">Сметы</span> и производные листы. Если нужны правки, сохраните файл и отправьте его боту повторно.</li>
+      </ol>
+      <div class="wiki-note"><strong>Важно:</strong> отправляйте Excel именно как документ. Если отправить файл другим способом, Telegram может изменить вложение или бот не увидит его как рабочий файл.</div>
     </section>
 
     <section class="section" id="result-file">
-      <div class="section-head"><span class="kicker">Что внутри</span><h2>Листы финального Excel</h2><p>Финальный файл собирает исходные позиции и производные отчёты в одной книге.</p></div>
-      <div class="table-wrap"><table><thead><tr><th>Лист</th><th>Для чего нужен</th></tr></thead><tbody>
-        <tr><td><span class="inline-code">Сметы</span></td><td>Основной лист с позициями по шкафам. Его можно вручную проверить и аккуратно поправить перед пересчётом.</td></tr>
-        <tr><td><span class="inline-code">Итоги по шкафам</span></td><td>Суммы по каждому шкафу без НДС и с НДС.</td></tr>
-        <tr><td><span class="inline-code">Сроки поставки</span></td><td>Сводка по позициям со сроками поставки и ссылками на строки листа <span class="inline-code">Сметы</span>.</td></tr>
-        <tr><td><span class="inline-code">Аналитика производителей</span></td><td>Сводка по производителям, количеству позиций и суммам.</td></tr>
-        <tr><td><span class="inline-code">Закупочная ведомость</span></td><td>Статичная закупочная таблица с агрегированными товарами, количеством, ценами и полями для ручного заполнения.</td></tr>
+      <div class="section-head"><span class="kicker">02. Финальный Excel</span><h2>Что находится внутри final_result</h2><p>Бот создаёт одну книгу Excel с основным листом смет и несколькими листами для проверки, аналитики и закупки.</p></div>
+      <div class="table-wrap"><table><thead><tr><th>Лист</th><th>Что показывает</th><th>Как используется</th></tr></thead><tbody>
+        <tr><td><span class="inline-code">Сметы</span></td><td>Позиции по шкафам, количества, цены, производители, артикулы, сроки и итоговые строки.</td><td>Основной лист для проверки и аккуратных ручных правок.</td></tr>
+        <tr><td><span class="inline-code">Итоги по шкафам</span></td><td>Суммы без НДС и с НДС по каждому шкафу.</td><td>Быстрая сводка по стоимости шкафов. Формулы ссылаются на актуальные итоговые строки листа <span class="inline-code">Сметы</span>.</td></tr>
+        <tr><td><span class="inline-code">Сроки поставки</span></td><td>Самые дальние сроки поставки и позиции без корректного срока.</td><td>Помогает найти риски по поставке и проблемные строки.</td></tr>
+        <tr><td><span class="inline-code">Аналитика производителей</span></td><td>Сводка по производителям, суммам, долям и расшифровкам.</td><td>Нужна для анализа структуры закупки.</td></tr>
+        <tr><td><span class="inline-code">Закупочная ведомость</span></td><td>Агрегированные товары, количество, цены, суммы, срок поставки, поставщик и статус закупки.</td><td>Статичная таблица для закупки и ручного заполнения поставщика/статуса.</td></tr>
       </tbody></table></div>
     </section>
 
-    <section class="section" id="recalculate">
-      <div class="section-head"><span class="kicker">Если смету правили вручную</span><h2>Пересчёт готового final_result</h2><p>Если вы изменили лист <span class="inline-code">Сметы</span> в уже созданном финальном файле, отправьте этот файл боту повторно. Бот распознаёт финальную смету по структуре и предлагает пересчитать её.</p></div>
+    <section class="section" id="purchase-sheet">
+      <div class="section-head"><span class="kicker">Закупочная ведомость</span><h2>Как бот объединяет позиции</h2><p>Ведомость формируется автоматически на этапе создания или пересчёта final_result.</p></div>
       <div class="grid-3">
-        <div class="card"><h3>Источник данных</h3><p>При пересчёте бот берёт актуальные строки именно с листа <span class="inline-code">Сметы</span>, включая изменённые количества, цены, производителей и сроки.</p></div>
-        <div class="card"><h3>Что обновляется</h3><p>Заново создаются листы итогов, сроков поставки, аналитики производителей и закупочной ведомости.</p></div>
-        <div class="card"><h3>Что сохраняется</h3><p>Лист <span class="inline-code">Сметы</span> сохраняется как есть. В новом файле точечно обновляются только формулы строки <span class="inline-code">Всего</span> в колонках J/K.</p></div>
+        <article class="card"><h3>Одинаковые товары</h3><p>Если совпадают товар, производитель, артикул, единица измерения и цены, строки объединяются в одну закупочную позицию.</p></article>
+        <article class="card"><h3>Количество</h3><p>Количество суммируется Python-кодом. Нечисловые или некорректные количества не смешиваются с обычными строками.</p></article>
+        <article class="card"><h3>Срок поставки</h3><p>Разный срок поставки больше не разделяет одинаковые товары. В итоговой строке остаётся самый дальний срок из объединённых строк.</p></article>
       </div>
-      <div class="notice"><strong>Важно:</strong> не переименовывайте лист <span class="inline-code">Сметы</span> и критичные заголовки колонок. Если структура повреждена, бот не будет делать некорректный пересчёт и попросит проверить файл.</div>
+      <div class="wiki-note"><strong>Статичность:</strong> изменения на других листах сами по себе не пересчитывают закупочную ведомость. Чтобы обновить её после ручных правок, отправьте final_result боту и нажмите <span class="inline-code">Пересчитать финальную смету</span>.</div>
+    </section>
+
+    <section class="section" id="recalculate">
+      <div class="section-head"><span class="kicker">03. Пересчёт</span><h2>Если final_result изменили вручную</h2><p>Бот умеет распознавать уже сформированную финальную смету по структуре книги, даже если имя файла изменилось.</p></div>
+      <div class="grid-3">
+        <article class="card"><h3>Как запустить</h3><p>Отправьте готовый final_result боту повторно. Если структура распознана, появится кнопка <span class="inline-code">Пересчитать финальную смету</span>.</p></article>
+        <article class="card"><h3>Источник данных</h3><p>Пересчёт берёт актуальные строки с листа <span class="inline-code">Сметы</span>, включая ручные изменения пользователя.</p></article>
+        <article class="card"><h3>Результат</h3><p>Бот создаёт новый файл с новым именем и пересобирает производные листы по актуальным данным.</p></article>
+      </div>
+      <div class="table-wrap compact-table"><table><thead><tr><th>Что сохраняется</th><th>Что обновляется</th></tr></thead><tbody>
+        <tr><td>Лист <span class="inline-code">Сметы</span> и ручные правки пользователя.</td><td>Формулы итоговых строк <span class="inline-code">Всего</span> в колонках J/K.</td></tr>
+        <tr><td>Структура блоков шкафов на листе <span class="inline-code">Сметы</span>.</td><td>Листы <span class="inline-code">Итоги по шкафам</span>, <span class="inline-code">Сроки поставки</span>, <span class="inline-code">Аналитика производителей</span>, <span class="inline-code">Закупочная ведомость</span>.</td></tr>
+        <tr><td>Пользовательские листы, которые не относятся к производным листам бота.</td><td>Ссылки и формулы производных листов на актуальные строки листа <span class="inline-code">Сметы</span>.</td></tr>
+      </tbody></table></div>
     </section>
 
     <section class="section" id="online-tkp">
-      <div class="section-head"><span class="kicker">Google Sheets</span><h2>Создание онлайн-ТКП</h2><p>После формирования или пересчёта финального Excel бот предлагает создать онлайн-ТКП. Ссылка на Google Таблицу приходит в Telegram.</p></div>
+      <div class="section-head"><span class="kicker">04. Онлайн-ТКП</span><h2>Создание Google Sheets ТКП</h2><p>Онлайн-ТКП создаётся из последнего готового final_result: только что сформированного, пересчитанного или повторно загруженного пользователем.</p></div>
       <div class="grid-3">
-        <div class="card"><h3>Обычная онлайн-ТКП</h3><p>Основная рабочая кнопка создаёт Google Sheets по действующему шаблону и заполняет его данными из финального Excel.</p></div>
-        <div class="card"><h3>Онлайн-ТКП v2</h3><p>Если в меню есть отдельная кнопка v2, это тестовая версия формы. Её используют для проверки новых формул и сравнения результата со стандартной ТКП.</p></div>
-        <div class="card"><h3>После пересчёта</h3><p>Если сначала пересчитать финальную смету, онлайн-ТКП будет создаваться уже из нового пересчитанного файла.</p></div>
+        <article class="card"><h3>Основная форма</h3><p>Кнопка <span class="inline-code">Сформировать форму онлайн ТКП?</span> создаёт Google Sheets по рабочему шаблону.</p></article>
+        <article class="card"><h3>Тестовая v2</h3><p>Кнопка <span class="inline-code">Сформировать онлайн ТКП v2</span> появляется только когда тестовый режим включён администратором.</p></article>
+        <article class="card"><h3>После создания</h3><p>Бот отправляет ссылку на Google Таблицу. Если создание не удалось, пользователь видит безопасное общее сообщение.</p></article>
       </div>
+      <div class="wiki-note"><strong>Если нужен точный результат после правок:</strong> сначала пересчитайте final_result, затем создавайте онлайн-ТКП уже из нового файла.</div>
     </section>
 
     <section class="section" id="safe-editing">
-      <div class="section-head"><span class="kicker">Правки в Excel</span><h2>Как редактировать финальный файл безопасно</h2></div>
+      <div class="section-head"><span class="kicker">05. Безопасные правки</span><h2>Что можно менять в Excel</h2><p>Ручные правки лучше делать только на листе <span class="inline-code">Сметы</span>, сохраняя структуру блоков шкафов.</p></div>
       <div class="grid-2">
-        <div class="card">
+        <article class="card">
           <h3>Можно</h3>
-          <p>Менять количества, цены, сроки поставки, производителя, артикул и код товара в товарных строках листа <span class="inline-code">Сметы</span>. Можно добавить товарную строку внутри блока шкафа, если сохранить структуру колонок.</p>
-        </div>
-        <div class="card">
+          <ul class="check-list">
+            <li>менять количество, цены, сроки поставки;</li>
+            <li>уточнять производителя, артикул, код товара и название позиции;</li>
+            <li>добавлять товарные строки внутри существующего блока шкафа;</li>
+            <li>после правок отправлять файл боту на пересчёт.</li>
+          </ul>
+        </article>
+        <article class="card">
           <h3>Не стоит</h3>
-          <p>Удалять строки <span class="inline-code">Примечание:</span> и <span class="inline-code">Всего</span>, переименовывать листы, менять критичные заголовки или переносить товары в произвольные места вне блока шкафа.</p>
-        </div>
+          <ul class="check-list danger">
+            <li>переименовывать лист <span class="inline-code">Сметы</span>;</li>
+            <li>удалять строки <span class="inline-code">Примечание:</span> и <span class="inline-code">Всего</span>;</li>
+            <li>ломать заголовки колонок и переносить товары вне блока шкафа;</li>
+            <li>редактировать производные листы как источник для пересчёта.</li>
+          </ul>
+        </article>
       </div>
-      <div class="notice"><strong>Если сомневаетесь:</strong> сохраните копию файла перед ручными правками. Бот не меняет отправленный исходник, а возвращает новый файл с новым именем.</div>
     </section>
 
     <section class="section" id="faq">
-      <div class="section-head"><span class="kicker">Частые вопросы</span><h2>Что делать, если что-то пошло не так</h2></div>
-      <div class="table-wrap"><table><thead><tr><th>Ситуация</th><th>Что проверить</th></tr></thead><tbody>
-        <tr><td>Бот не видит файл</td><td>Проверьте, что файл отправлен как документ и имеет поддерживаемое расширение.</td></tr>
-        <tr><td>Пересчёт не запускается</td><td>Убедитесь, что это финальный файл с листом <span class="inline-code">Сметы</span> и сохранёнными заголовками товарной таблицы.</td></tr>
-        <tr><td>Нет кнопки онлайн-ТКП</td><td>Сначала дождитесь готового <span class="inline-code">final_result</span>. Для ранее созданного файла отправьте его боту повторно.</td></tr>
-        <tr><td>v2-кнопка отсутствует</td><td>Это нормально: v2 показывается только когда тестовый режим включён администратором.</td></tr>
+      <div class="section-head"><span class="kicker">06. FAQ</span><h2>Частые ситуации</h2></div>
+      <div class="table-wrap"><table><thead><tr><th>Ситуация</th><th>Что сделать</th></tr></thead><tbody>
+        <tr><td>Бот не принимает файл</td><td>Проверьте расширение и отправьте файл как документ, а не как медиа или предпросмотр.</td></tr>
+        <tr><td>Бот предупреждает о дублях</td><td>Проверьте повторяющиеся сметы по названию шкафа. Если дубли ожидаемые, используйте кнопку продолжения с дублями.</td></tr>
+        <tr><td>Не появляется пересчёт</td><td>Убедитесь, что отправлен именно готовый final_result со структурой листов бота.</td></tr>
+        <tr><td>Нет кнопки онлайн-ТКП</td><td>Сначала сформируйте final_result или отправьте ранее сформированный final_result боту повторно.</td></tr>
+        <tr><td>Нет кнопки v2</td><td>Это нормально: v2 доступна только в тестовом режиме и может быть скрыта администратором.</td></tr>
+        <tr><td>Онлайн-ТКП не создалась</td><td>Повторите позже или обратитесь к администратору. Сообщение в Telegram специально не показывает внутренние технические детали.</td></tr>
       </tbody></table></div>
     </section>
 
