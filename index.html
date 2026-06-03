@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="База знаний EMPR Automation: Telegram-бот для смет, онлайн-ТКП, финальный Excel, паспорта НКУ, реестр НКУ и рабочие файлы." />
-  <title>EMPR Automation: база знаний</title>
+  <meta name="description" content="Wiki EMPR Automation: инструкции по @EMPR_smetaBot, сметам, онлайн-ТКП, паспортам НКУ, реестру и рабочим файлам." />
+  <title>EMPR Automation Wiki</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="В начало">
       <span class="brand-mark">⚡</span>
-      <span><strong>НКУ Automation</strong><small>База знаний</small></span>
+      <span><strong>EMPR Wiki</strong><small>Сметы • НКУ • ТКП</small></span>
     </a>
     <nav class="topnav" aria-label="Основная навигация">
       <a class="active" href="index.html">Главная</a>
@@ -28,176 +27,74 @@
     <button class="theme-toggle" type="button" id="themeToggle" aria-label="Переключить тему">☀ / ☾</button>
   </header>
 
-  <main class="layout">
-    <section class="wiki-hero">
-      <div class="wiki-hero-copy">
-        <div class="eyebrow">EMPR Automation Wiki</div>
-        <h1>База знаний по сметам, НКУ и онлайн-ТКП</h1>
-        <p class="lead">Главная страница теперь работает как оглавление: здесь собраны пользовательские инструкции по @EMPR_smetaBot, финальному Excel, онлайн-ТКП, паспортам НКУ, реестру и рабочим файлам.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="bot.html">Открыть справку по боту</a>
-          <a class="btn ghost" href="#wiki-map">Карта разделов</a>
-        </div>
-      </div>
-      <nav class="wiki-quick-index" aria-label="Быстрые разделы">
-        <a href="#empr-smeta-bot"><span>01</span><strong>@EMPR_smetaBot</strong><small>Сметы, final_result и пересчёт</small></a>
-        <a href="#online-tkp"><span>02</span><strong>Онлайн-ТКП</strong><small>Google Sheets формы v1 и v2</small></a>
-        <a href="#final-excel"><span>03</span><strong>Финальный Excel</strong><small>Листы, проверки и ведомости</small></a>
-        <a href="#nku-tools"><span>04</span><strong>НКУ-инструменты</strong><small>Паспорта и реестр</small></a>
-        <a href="#files-and-prompts"><span>05</span><strong>Файлы и промты</strong><small>Скачивания и контекст доработок</small></a>
-      </nav>
+  <main class="layout wiki-page">
+    <header class="wiki-page-header">
+      <p class="wiki-breadcrumb">Главная</p>
+      <h1>EMPR Automation Wiki</h1>
+      <p>Короткая база знаний по рабочим инструментам: Telegram-боту для смет, онлайн-ТКП, финальному Excel, паспортам НКУ, реестру и файлам для скачивания.</p>
+    </header>
+
+    <section class="wiki-doc">
+      <h2>Разделы</h2>
+      <ul class="wiki-index-list">
+        <li>
+          <a href="bot.html"><strong>@EMPR_smetaBot</strong></a>
+          <p>Работа со сметами через Telegram: загрузка Excel/ZIP, получение <span class="inline-code">final_result</span>, пересчёт готового файла и создание онлайн-ТКП.</p>
+          <ul>
+            <li><a href="bot.html#quick-start">Быстрый старт</a></li>
+            <li><a href="bot.html#result-file">Что внутри final_result</a></li>
+            <li><a href="bot.html#recalculate">Пересчёт после ручных правок</a></li>
+            <li><a href="bot.html#online-tkp">Онлайн-ТКП v1/v2</a></li>
+            <li><a href="bot.html#safe-editing">Безопасные правки в Excel</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="passports.html"><strong>Генерация паспортов НКУ</strong></a>
+          <p>Создание DOCX-паспортов по шаблону из Google Таблицы или локального Excel.</p>
+        </li>
+        <li>
+          <a href="registry.html"><strong>Заполнение реестра НКУ</strong></a>
+          <p>Интерактивное добавление строк в реестр с формированием типа изделия, номеров и параметров.</p>
+        </li>
+        <li>
+          <a href="files.html"><strong>Файлы для скачивания</strong></a>
+          <p>Скрипты, шаблоны, инструкции, bat/command-файлы запуска и рабочие документы.</p>
+        </li>
+        <li>
+          <a href="prompts.html"><strong>Промты для доработок</strong></a>
+          <p>Готовый контекст проекта для ChatGPT/Codex и правила безопасной разработки.</p>
+        </li>
+      </ul>
     </section>
 
-    <section class="section" id="wiki-map">
-      <div class="section-head">
-        <span class="kicker">Карта разделов</span>
-        <h2>Что где искать</h2>
-        <p>Разделы сгруппированы по рабочим сценариям: от загрузки смет в Telegram до генерации документов НКУ.</p>
-      </div>
-      <div class="wiki-grid">
-        <a class="wiki-tile" href="bot.html">
-          <span class="wiki-tile-label">Telegram-бот</span>
-          <h3>Сметы и онлайн-ТКП</h3>
-          <p>Пошаговая инструкция для пользователей: загрузка Excel/ZIP, получение final_result, пересчёт и создание Google Sheets ТКП.</p>
-        </a>
-        <a class="wiki-tile" href="passports.html">
-          <span class="wiki-tile-label">Паспорта</span>
-          <h3>Генерация паспортов НКУ</h3>
-          <p>Создание DOCX-паспортов по шаблону из Google Таблицы или локального Excel-файла.</p>
-        </a>
-        <a class="wiki-tile" href="registry.html">
-          <span class="wiki-tile-label">Реестр</span>
-          <h3>Заполнение реестра НКУ</h3>
-          <p>Интерактивное добавление строк в реестр, формирование типа изделия, номеров и параметров.</p>
-        </a>
-        <a class="wiki-tile" href="files.html">
-          <span class="wiki-tile-label">Файлы</span>
-          <h3>Скрипты и инструкции</h3>
-          <p>Список доступных файлов, bat/command-запусков, шаблонов и документов для скачивания.</p>
-        </a>
-      </div>
+    <section class="wiki-doc">
+      <h2>Функционал @EMPR_smetaBot</h2>
+      <ul class="wiki-plain-list">
+        <li>Принимает <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архивы со сметами.</li>
+        <li>Формирует <span class="inline-code">final_result_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li>Распознаёт уже готовый <span class="inline-code">final_result</span> по структуре книги, а не только по имени файла.</li>
+        <li>Предлагает пересчитать финальную смету после ручных правок на листе <span class="inline-code">Сметы</span>.</li>
+        <li>Создаёт онлайн-ТКП в Google Sheets из нового, пересчитанного или повторно загруженного final_result.</li>
+        <li>Если тестовый режим включён администратором, показывает отдельную кнопку онлайн-ТКП v2.</li>
+      </ul>
     </section>
 
-    <section class="section wiki-section" id="empr-smeta-bot">
-      <div class="section-head">
-        <span class="kicker">01. Telegram-бот</span>
-        <h2>@EMPR_smetaBot для пользователей</h2>
-        <p>Бот заменяет ручной запуск скриптов: пользователь отправляет сметы в Telegram и получает готовую книгу Excel с расчётами и отчётными листами.</p>
-      </div>
-      <div class="grid-3">
-        <article class="card">
-          <h3>Что принимает</h3>
-          <p>Excel-файлы <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архивы с несколькими сметами.</p>
-        </article>
-        <article class="card">
-          <h3>Что возвращает</h3>
-          <p>Файл <span class="inline-code">final_result_дата_время.xlsx</span> с листами <span class="inline-code">Сметы</span>, <span class="inline-code">Итоги по шкафам</span>, <span class="inline-code">Сроки поставки</span>, <span class="inline-code">Аналитика производителей</span> и <span class="inline-code">Закупочная ведомость</span>.</p>
-        </article>
-        <article class="card">
-          <h3>Что можно сделать потом</h3>
-          <p>Пересчитать готовый final_result после ручных правок или создать онлайн-ТКП в Google Sheets прямо из Telegram.</p>
-        </article>
-      </div>
-      <div class="wiki-note">
-        <strong>Ключевой сценарий:</strong> отправить смету как документ, дождаться финального Excel, проверить лист <span class="inline-code">Сметы</span>, при необходимости внести правки и отправить файл обратно для пересчёта.
-      </div>
-      <div class="actions">
-        <a class="btn primary" href="bot.html">Подробная инструкция по боту</a>
-        <a class="btn ghost" href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener">Открыть @EMPR_smetaBot</a>
-      </div>
+    <section class="wiki-doc">
+      <h2>Листы final_result</h2>
+      <dl class="wiki-def-list">
+        <dt>Сметы</dt>
+        <dd>Основной лист с блоками шкафов, товарными строками, ценами, сроками и итогами.</dd>
+        <dt>Итоги по шкафам</dt>
+        <dd>Сводка по стоимости шкафов. Формулы ссылаются на актуальные строки листа <span class="inline-code">Сметы</span>.</dd>
+        <dt>Сроки поставки</dt>
+        <dd>Самые дальние сроки и позиции без корректного срока поставки.</dd>
+        <dt>Аналитика производителей</dt>
+        <dd>Сводка по производителям, суммам и долям.</dd>
+        <dt>Закупочная ведомость</dt>
+        <dd>Статичная закупочная таблица. Одинаковые позиции объединяются, количество суммируется, срок берётся самый дальний.</dd>
+      </dl>
     </section>
 
-    <section class="section wiki-section" id="online-tkp">
-      <div class="section-head">
-        <span class="kicker">02. Онлайн-ТКП</span>
-        <h2>Google Sheets из финальной сметы</h2>
-        <p>После создания или пересчёта final_result бот предлагает сформировать онлайн-ТКП. Ссылка на созданную Google Таблицу приходит в чат.</p>
-      </div>
-      <div class="table-wrap compact-table">
-        <table>
-          <thead><tr><th>Кнопка</th><th>Когда использовать</th><th>Что получится</th></tr></thead>
-          <tbody>
-            <tr><td><span class="inline-code">Сформировать форму онлайн ТКП?</span></td><td>Основной рабочий сценарий.</td><td>Google Sheets ТКП по действующему шаблону.</td></tr>
-            <tr><td><span class="inline-code">Сформировать онлайн ТКП v2</span></td><td>Если кнопка видна в меню и нужно проверить тестовую форму.</td><td>Тестовая версия онлайн-ТКП v2 для сравнения результата.</td></tr>
-            <tr><td><span class="inline-code">Пересчитать финальную смету</span></td><td>Если пользователь вручную изменил лист <span class="inline-code">Сметы</span>.</td><td>Новый final_result, из которого затем можно создать онлайн-ТКП.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section wiki-section" id="final-excel">
-      <div class="section-head">
-        <span class="kicker">03. Финальный Excel</span>
-        <h2>Как устроен final_result</h2>
-        <p>Финальная книга собирает исходные позиции по шкафам и производные листы для проверки, закупки и аналитики.</p>
-      </div>
-      <div class="wiki-list">
-        <article>
-          <h3>Сметы</h3>
-          <p>Основной лист с блоками шкафов. В строках товаров можно проверять количество, цены, производителей, артикулы и сроки поставки.</p>
-        </article>
-        <article>
-          <h3>Итоги по шкафам</h3>
-          <p>Сводные суммы по каждому шкафу. После пересчёта формулы снова ссылаются на актуальные строки листа <span class="inline-code">Сметы</span>.</p>
-        </article>
-        <article>
-          <h3>Сроки поставки</h3>
-          <p>Показывает самые дальние сроки и позиции без корректного срока, чтобы быстро найти проблемные места.</p>
-        </article>
-        <article>
-          <h3>Аналитика производителей</h3>
-          <p>Сводка по производителям, суммам и долям. Нужна для понимания структуры закупки и крупных поставщиков.</p>
-        </article>
-        <article>
-          <h3>Закупочная ведомость</h3>
-          <p>Статичная таблица для закупки: одинаковые позиции объединяются, количество суммируется, а срок поставки берётся самый дальний из объединённых строк.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section wiki-section" id="nku-tools">
-      <div class="section-head">
-        <span class="kicker">04. НКУ-инструменты</span>
-        <h2>Паспорта и реестр</h2>
-        <p>Кроме Telegram-бота на сайте остаются инструкции по локальным скриптам для документов НКУ.</p>
-      </div>
-      <div class="grid-2">
-        <article class="card">
-          <h3>Паспорта НКУ</h3>
-          <p>Скрипт формирует Word-паспорта по шаблону и данным из Google Таблицы или локального Excel.</p>
-          <div class="badges"><span class="badge">DOCX</span><span class="badge">Google Sheets</span><span class="badge">Excel</span></div>
-          <div class="actions"><a class="btn primary" href="passports.html">Открыть раздел</a></div>
-        </article>
-        <article class="card">
-          <h3>Реестр НКУ</h3>
-          <p>Скрипт помогает заполнить реестр НКУ, добавляя строки с нужными параметрами и номерами.</p>
-          <div class="badges"><span class="badge">Реестр</span><span class="badge">Интерактивный запуск</span><span class="badge">Windows/macOS</span></div>
-          <div class="actions"><a class="btn green" href="registry.html">Открыть раздел</a></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section wiki-section" id="files-and-prompts">
-      <div class="section-head">
-        <span class="kicker">05. Материалы</span>
-        <h2>Файлы, инструкции и промты</h2>
-        <p>Служебные страницы помогают скачать нужные файлы и передать контекст для будущих доработок.</p>
-      </div>
-      <div class="grid-2">
-        <article class="card">
-          <h3>Файлы для скачивания</h3>
-          <p>Скрипты, шаблоны, инструкции и файлы запуска собраны в одном списке.</p>
-          <div class="actions"><a class="btn ghost" href="files.html">Перейти к файлам</a></div>
-        </article>
-        <article class="card">
-          <h3>Промты для доработок</h3>
-          <p>Готовый контекст проекта для ChatGPT/Codex: правила, структура и важные ограничения.</p>
-          <div class="actions"><a class="btn ghost" href="prompts.html">Открыть промты</a></div>
-        </article>
-      </div>
-    </section>
-
-    <div class="footer-banner"><img src="assets/production-banner.jpeg" alt="Производство НКУ" /></div>
     <footer class="footer">2026 I.C.</footer>
   </main>
   <div class="toast" id="toast">Команда скопирована</div>
