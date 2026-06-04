@@ -53,13 +53,25 @@
       <h2>2. Что внутри final_result</h2>
       <dl class="wiki-def-list">
         <dt>Сметы</dt>
-        <dd>Основной лист с позициями по шкафам. Его можно проверять и аккуратно редактировать.</dd>
+        <dd>
+          Основной лист с позициями по шкафам. Его можно проверять и аккуратно редактировать.
+          <figure class="wiki-screenshot">
+            <img src="assets/final-result-smety.png" alt="Лист Сметы в final_result.xlsx" loading="lazy" />
+            <figcaption>Пример основного листа <span class="inline-code">Сметы</span> с блоками шкафов.</figcaption>
+          </figure>
+        </dd>
         <dt>Итоги по шкафам</dt>
         <dd>Суммы без НДС и с НДС по каждому шкафу. При пересчёте формулы ссылаются на актуальные итоговые строки листа <span class="inline-code">Сметы</span>.</dd>
         <dt>Сроки поставки</dt>
         <dd>Топ самых дальних сроков и список строк без корректного срока.</dd>
         <dt>Аналитика производителей</dt>
-        <dd>Сводка по производителям, суммам и долям.</dd>
+        <dd>
+          Сводка по производителям, суммам и долям.
+          <figure class="wiki-screenshot">
+            <img src="assets/manufacturer-analytics.png" alt="Лист Аналитика производителей в final_result.xlsx" loading="lazy" />
+            <figcaption>Пример аналитики производителей: KPI, таблица, диаграмма и расшифровка.</figcaption>
+          </figure>
+        </dd>
         <dt>Закупочная ведомость</dt>
         <dd>Статичная таблица для закупки с агрегированными позициями.</dd>
       </dl>
@@ -75,6 +87,10 @@
         <li>Поля <span class="inline-code">Поставщик</span> и <span class="inline-code">Статус закупки</span> оставлены для ручного заполнения.</li>
       </ul>
       <p>Ведомость статичная: если данные на листе <span class="inline-code">Сметы</span> изменились, нужно отправить final_result боту и нажать <span class="inline-code">Пересчитать финальную смету</span>.</p>
+      <figure class="wiki-screenshot">
+        <img src="assets/purchase-sheet.png" alt="Лист Закупочная ведомость в final_result.xlsx" loading="lazy" />
+        <figcaption>Пример закупочной ведомости: агрегированные товары, количество, цены и поля для закупки.</figcaption>
+      </figure>
     </section>
 
     <section class="wiki-doc" id="recalculate">

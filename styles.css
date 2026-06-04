@@ -195,6 +195,23 @@ p { color: var(--muted); line-height: 1.7; }
   color: var(--muted);
   line-height: 1.65;
 }
+.wiki-screenshot {
+  margin: 12px 0 4px;
+}
+.wiki-screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-soft);
+}
+.wiki-screenshot figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
 .wiki-toc ol {
   margin: 0;
   padding-left: 22px;
