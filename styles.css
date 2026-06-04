@@ -197,14 +197,18 @@ p { color: var(--muted); line-height: 1.7; }
 }
 .wiki-screenshot {
   margin: 12px 0 4px;
+  max-width: 100%;
+  overflow: hidden;
 }
 .wiki-screenshot img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--bg-soft);
+  object-fit: contain;
 }
 .wiki-screenshot figcaption {
   margin-top: 8px;
