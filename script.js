@@ -9,6 +9,30 @@ themeToggle?.addEventListener('click', () => {
   localStorage.setItem('theme', next);
 });
 
+const topbar = document.querySelector('.topbar');
+if (topbar && themeToggle) {
+  const topbarTools = document.createElement('div');
+  topbarTools.className = 'topbar-tools';
+
+  const cabinet = document.createElement('div');
+  cabinet.className = 'power-cabinet';
+  cabinet.setAttribute('aria-hidden', 'true');
+  cabinet.innerHTML = `
+    <span class="cabinet-shell">
+      <span class="cabinet-panel cabinet-left"></span>
+      <span class="cabinet-panel cabinet-right"></span>
+      <span class="cabinet-warning">⚡</span>
+      <span class="cabinet-lamp cabinet-lamp-green"></span>
+      <span class="cabinet-lamp cabinet-lamp-red"></span>
+      <span class="cabinet-arc cabinet-arc-one"></span>
+      <span class="cabinet-arc cabinet-arc-two"></span>
+    </span>
+  `;
+
+  topbar.insertBefore(topbarTools, themeToggle);
+  topbarTools.append(cabinet, themeToggle);
+}
+
 const tabs = document.querySelectorAll('.tab');
 const panels = document.querySelectorAll('.tab-panel');
 tabs.forEach((tab) => {
