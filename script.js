@@ -14,9 +14,11 @@ if (topbar && themeToggle) {
   const topbarTools = document.createElement('div');
   topbarTools.className = 'topbar-tools';
 
-  const cabinet = document.createElement('div');
+  const cabinet = document.createElement('button');
   cabinet.className = 'power-cabinet';
-  cabinet.setAttribute('aria-hidden', 'true');
+  cabinet.type = 'button';
+  cabinet.title = 'Проверить напряжение';
+  cabinet.setAttribute('aria-label', 'Проверить напряжение на электрическом шкафу');
   cabinet.innerHTML = `
     <span class="cabinet-shell">
       <span class="cabinet-panel cabinet-left"></span>
@@ -27,10 +29,22 @@ if (topbar && themeToggle) {
       <span class="cabinet-arc cabinet-arc-one"></span>
       <span class="cabinet-arc cabinet-arc-two"></span>
     </span>
+    <span class="cabinet-burst cabinet-burst-one">⚡</span>
+    <span class="cabinet-burst cabinet-burst-two">⚡</span>
+    <span class="cabinet-burst cabinet-burst-three">⚡</span>
   `;
 
   topbar.insertBefore(topbarTools, themeToggle);
   topbarTools.append(cabinet, themeToggle);
+
+  let cabinetZapTimer;
+  cabinet.addEventListener('click', () => {
+    cabinet.classList.remove('cabinet-zap');
+    void cabinet.offsetWidth;
+    cabinet.classList.add('cabinet-zap');
+    clearTimeout(cabinetZapTimer);
+    cabinetZapTimer = setTimeout(() => cabinet.classList.remove('cabinet-zap'), 900);
+  });
 }
 
 const tabs = document.querySelectorAll('.tab');
