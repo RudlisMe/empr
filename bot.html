@@ -50,7 +50,7 @@
         <li>Проверьте результат. Если нужны ручные правки, внесите их на листе <span class="inline-code">Сметы</span> и отправьте файл боту повторно.</li>
       </ol>
       <p>Поддерживаются файлы <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архивы с несколькими Excel-сметами.</p>
-      <figure class="wiki-screenshot">
+      <figure class="wiki-screenshot telegram-screenshot">
         <img src="assets/bot-final-smeta.png" alt="Диалог Telegram с @EMPR_smetaBot после формирования финальной сметы" loading="lazy" />
         <figcaption>Пример диалога: после обработки бот отправляет final_result, краткую сводку и кнопки для онлайн-ТКП или продолжения работы.</figcaption>
       </figure>
@@ -136,6 +136,10 @@
         <dt>Если Google Sheets временно недоступен</dt>
         <dd>Бот показывает безопасное сообщение об ошибке и, если локальный итоговый Excel уже доступен, дополнительно отправляет final_result как документ.</dd>
       </dl>
+      <figure class="wiki-screenshot telegram-screenshot">
+        <img src="assets/bot-online-tkp-preview.png" alt="Диалог Telegram с @EMPR_smetaBot после создания онлайн-ТКП" loading="lazy" />
+        <figcaption>После создания онлайн-ТКП бот показывает preview Google Sheets и оставляет кнопки для следующего действия. Прямая ссылка на таблицу на сайте не публикуется.</figcaption>
+      </figure>
     </section>
 
     <section class="wiki-doc" id="admin-commands">
