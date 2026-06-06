@@ -34,6 +34,7 @@
         <li><a href="#recalculate">Пересчёт финальной сметы</a></li>
         <li><a href="#online-tkp">Онлайн-ТКП</a></li>
         <li><a href="#admin-commands">Admin-команды</a></li>
+        <li><a href="#install">Установка на VPS</a></li>
         <li><a href="#safe-editing">Безопасные правки</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ol>
@@ -150,8 +151,28 @@
       </dl>
     </section>
 
+    <section class="wiki-doc" id="install">
+      <h2>8. Установка на VPS</h2>
+      <p>Для нового VPS в репозитории <span class="inline-code">RudlisMe/empr-smeta-bot</span> подготовлен guarded installer <span class="inline-code">deploy/install_new_vps.sh</span>. Скрипт рассчитан на запуск на новом сервере от root и сначала должен проверяться через <span class="inline-code">--dry-run</span>.</p>
+      <ul class="wiki-plain-list">
+        <li>Скрипт создаёт пользователя <span class="inline-code">emprbot</span>, рабочую папку <span class="inline-code">/opt/empr-smeta-bot</span>, <span class="inline-code">.venv</span> и systemd service <span class="inline-code">empr-smeta-bot.service</span>.</li>
+        <li>GitHub SSH настраивается через <span class="inline-code">ssh.github.com:443</span>; private deploy key не печатается, показывается только public key.</li>
+        <li>Перед включением service скрипт запускает тесты. В real mode его нужно проверять только на новом или disposable VPS.</li>
+        <li>Installer пока не считается production-verified: stable tag для него не создавался.</li>
+      </ul>
+      <div class="notice"><strong>Важно:</strong> real <span class="inline-code">.env</span>, Telegram token, OAuth token/client secret, service account JSON и Google templates нельзя публиковать, вставлять в логи или отправлять в чат.</div>
+      <dl class="wiki-def-list">
+        <dt><span class="inline-code">GOOGLE_TKP_REGISTRY_URL</span></dt>
+        <dd>Опциональная прямая ссылка для <span class="inline-code">/reestr</span>. Если пусто, бот строит fallback из <span class="inline-code">GOOGLE_TKP_REGISTRY_SPREADSHEET_ID</span>.</dd>
+        <dt><span class="inline-code">GOOGLE_TKP_ENABLE_QR_FORMULA</span></dt>
+        <dd>Опциональный флаг QR-формулы в Google TKP. По умолчанию оставляйте <span class="inline-code">false</span>.</dd>
+        <dt><span class="inline-code">OAUTH_REAUTH_SSH_HOST</span></dt>
+        <dd>На новом VPS должен указывать на новый public IP/DNS, а не копироваться из старого <span class="inline-code">.env</span>.</dd>
+      </dl>
+    </section>
+
     <section class="wiki-doc" id="safe-editing">
-      <h2>8. Безопасные правки</h2>
+      <h2>9. Безопасные правки</h2>
       <h3>Можно</h3>
       <ul class="wiki-plain-list">
         <li>менять количество, цены, сроки поставки;</li>
@@ -170,7 +191,7 @@
     </section>
 
     <section class="wiki-doc" id="faq">
-      <h2>9. FAQ</h2>
+      <h2>10. FAQ</h2>
       <dl class="wiki-def-list">
         <dt>Бот не принимает файл</dt>
         <dd>Проверьте расширение и отправьте файл как документ.</dd>
