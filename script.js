@@ -48,3 +48,65 @@ document.querySelectorAll('.copy-btn').forEach((button) => {
     setTimeout(() => { button.textContent = old; }, 1200);
   });
 });
+
+const screenshotImages = document.querySelectorAll('.wiki-screenshot img');
+if (screenshotImages.length) {
+  const lightbox = document.createElement('div');
+  lightbox.className = 'image-lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Просмотр скриншота');
+  lightbox.innerHTML = `
+    <div class="image-lightbox-inner">
+      <button class="image-lightbox-close" type="button" aria-label="Закрыть">×</button>
+      <img alt="" />
+      <div class="image-lightbox-caption"></div>
+    </div>
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImage = lightbox.querySelector('img');
+  const lightboxCaption = lightbox.querySelector('.image-lightbox-caption');
+  const closeButton = lightbox.querySelector('.image-lightbox-close');
+  let lastFocusedImage;
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+    lightboxImage.removeAttribute('src');
+    lastFocusedImage?.focus();
+  }
+
+  function openLightbox(image) {
+    lastFocusedImage = image;
+    lightboxImage.src = image.currentSrc || image.src;
+    lightboxImage.alt = image.alt || '';
+    lightboxCaption.textContent = image.closest('figure')?.querySelector('figcaption')?.textContent || image.alt || '';
+    document.body.classList.add('lightbox-open');
+    lightbox.classList.add('open');
+    closeButton.focus();
+  }
+
+  screenshotImages.forEach((image) => {
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', `Открыть скриншот: ${image.alt || 'изображение'}`);
+    image.addEventListener('click', () => openLightbox(image));
+    image.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLightbox(image);
+      }
+    });
+  });
+
+  closeButton.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+}
