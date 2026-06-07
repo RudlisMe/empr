@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Wiki-инструкция @EMPR_smetaBot: загрузка смет, final_result, пересчёт, контроль проблемных сумм, закупочная ведомость, онлайн-ТКП и admin-команды." />
+  <meta name="description" content="Wiki-инструкция @EMPR_smetaBot: загрузка смет, final_result, пересчёт, замена позиций, контроль проблемных сумм, закупочная ведомость, онлайн-ТКП и admin-команды." />
   <title>@EMPR_smetaBot: wiki-инструкция</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
     <header class="wiki-page-header">
       <p class="wiki-breadcrumb"><a href="index.html">Главная</a> / Telegram-бот</p>
       <h1>@EMPR_smetaBot</h1>
-      <p>Справка для пользователей и администраторов: как отправлять сметы, получать финальный Excel, пересчитывать готовый файл, проверять проблемные суммы и создавать онлайн-ТКП.</p>
+      <p>Справка для пользователей и администраторов: как отправлять сметы, получать финальный Excel, пересчитывать готовый файл, заменять позиции, проверять проблемные суммы и создавать онлайн-ТКП.</p>
       <p><a href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener">Открыть бота в Telegram</a></p>
     </header>
 
@@ -32,6 +32,7 @@
         <li><a href="#invalid-prices">Контроль сумм</a></li>
         <li><a href="#purchase-sheet">Закупочная ведомость</a></li>
         <li><a href="#recalculate">Пересчёт финальной сметы</a></li>
+        <li><a href="#replacement-flow">Замена позиций</a></li>
         <li><a href="#online-tkp">Онлайн-ТКП</a></li>
         <li><a href="#admin-commands">Admin-команды</a></li>
         <li><a href="#install">Установка на VPS</a></li>
@@ -124,8 +125,172 @@
       </ul>
     </section>
 
+    <section class="wiki-doc" id="replacement-flow">
+      <h2>6. Замена позиций из финальной сметы</h2>
+      <p>Функция нужна, когда уже есть готовый <span class="inline-code">final_result.xlsx</span>, но в нём нужно массово заменить, удалить или добавить товарные позиции без ручного редактирования каждой строки в Excel.</p>
+      <div class="notice"><strong>Важно:</strong> замены выполняются только от готового финального файла. Сначала сформируйте или загрузите валидный <span class="inline-code">final_result.xlsx</span>, затем работайте с кнопками <span class="inline-code">Сформировать шаблон замен</span> и <span class="inline-code">Заменить позиции</span>.</div>
+
+      <h3>Последовательность работы</h3>
+      <ol class="wiki-ordered-list">
+        <li>Откройте <span class="inline-code">@EMPR_smetaBot</span>.</li>
+        <li>Отправьте готовый файл <span class="inline-code">final_result.xlsx</span> как документ. Это может быть файл, который бот только что сформировал, или ранее сохранённый итоговый файл.</li>
+        <li>Дождитесь, пока бот распознает файл как финальную смету и покажет кнопки действий.</li>
+        <li>Нажмите <span class="inline-code">Сформировать шаблон замен</span>.</li>
+        <li>Скачайте полученный файл <span class="inline-code">replacement_template_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li>Откройте шаблон в Excel и заполните лист <span class="inline-code">Замены</span>.</li>
+        <li>Вернитесь в Telegram и нажмите <span class="inline-code">Заменить позиции</span>.</li>
+        <li>Отправьте заполненный файл замен как документ.</li>
+        <li>Проверьте preview: бот покажет, какие строки будут заменены, удалены или добавлены, какие шкафы затронуты и есть ли ошибки.</li>
+        <li>Если ошибок нет, нажмите <span class="inline-code">Применить</span>. Если есть дубли при добавлении, выберите один из вариантов обработки дублей.</li>
+        <li>Получите новый файл <span class="inline-code">final_result_replaced_YYYY-MM-DD_HH-MM-SS.xlsx</span>. Исходный <span class="inline-code">final_result.xlsx</span> при этом не меняется.</li>
+        <li>Проверьте листы <span class="inline-code">Сметы</span>, <span class="inline-code">Итоги по шкафам</span>, <span class="inline-code">Закупочная ведомость</span> и <span class="inline-code">Журнал замен</span>.</li>
+      </ol>
+
+      <h3>Какие листы есть в шаблоне</h3>
+      <dl class="wiki-def-list">
+        <dt><span class="inline-code">Замены</span></dt>
+        <dd>Основной лист. Здесь пользователь вводит правила: что заменить, удалить, добавить или пропустить.</dd>
+        <dt><span class="inline-code">Позиции сметы</span></dt>
+        <dd>Справочный список текущих позиций из финальной сметы. Его удобно использовать, чтобы скопировать старый код товара и точное имя шкафа.</dd>
+        <dt><span class="inline-code">Инструкция</span></dt>
+        <dd>Краткая памятка внутри Excel-файла.</dd>
+      </dl>
+
+      <h3>Колонки листа "Замены"</h3>
+      <div class="table-wrap compact-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Колонка</th>
+              <th>Что вводить</th>
+              <th>Когда обязательно</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="inline-code">Действие</span></td>
+              <td><span class="inline-code">replace</span>, <span class="inline-code">delete</span>, <span class="inline-code">add</span> или <span class="inline-code">skip</span>.</td>
+              <td>Всегда, если строка должна обрабатываться.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Старый код товара</span></td>
+              <td>Код существующей позиции из листа <span class="inline-code">Сметы</span>. Можно скопировать с листа <span class="inline-code">Позиции сметы</span>.</td>
+              <td>Для <span class="inline-code">replace</span> и <span class="inline-code">delete</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Область применения</span></td>
+              <td><span class="inline-code">all</span> для всех шкафов или точное имя одного шкафа. Имя шкафа должно совпадать с названием из финальной сметы.</td>
+              <td>Для <span class="inline-code">add</span>. Для <span class="inline-code">replace</span> и <span class="inline-code">delete</span> можно использовать, если правило нужно применить только к одному шкафу.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Новый код товара</span></td>
+              <td>Код новой позиции.</td>
+              <td>Для <span class="inline-code">replace</span> и <span class="inline-code">add</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Имя товара</span>, <span class="inline-code">Производитель</span>, <span class="inline-code">Артикул</span></td>
+              <td>Данные новой позиции, которые попадут в итоговую смету.</td>
+              <td>Для <span class="inline-code">replace</span> и <span class="inline-code">add</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Кол-во</span></td>
+              <td>Число больше нуля. Например <span class="inline-code">1</span>, <span class="inline-code">2</span>, <span class="inline-code">3.5</span>.</td>
+              <td>Только для <span class="inline-code">add</span>. Для <span class="inline-code">replace</span> игнорируется: количество сохраняется из исходной сметы.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Ед.изм.</span>, <span class="inline-code">Цена без НДС</span>, <span class="inline-code">Цена с НДС</span>, <span class="inline-code">Срок поставки</span>, <span class="inline-code">Штрих-код</span></td>
+              <td>Характеристики новой позиции.</td>
+              <td>Для <span class="inline-code">replace</span> и <span class="inline-code">add</span>.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Сумма без НДС</span>, <span class="inline-code">Сумма с НДС</span></td>
+              <td>Справочные поля. Их можно оставить пустыми или вставить из прайса.</td>
+              <td>Не обязательны. Бот не использует эти значения: итоговые суммы пересчитываются формулами.</td>
+            </tr>
+            <tr>
+              <td><span class="inline-code">Комментарий</span></td>
+              <td>Любая заметка для себя или для журнала замен.</td>
+              <td>Не обязательно.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Действие replace: заменить позицию</h3>
+      <p>Используйте <span class="inline-code">replace</span>, когда нужно заменить одну существующую позицию на другую.</p>
+      <ul class="wiki-plain-list">
+        <li>В <span class="inline-code">Действие</span> укажите <span class="inline-code">replace</span>.</li>
+        <li>В <span class="inline-code">Старый код товара</span> укажите код позиции, которую нужно заменить.</li>
+        <li>Если замена нужна только в одном шкафу, укажите точное имя шкафа в <span class="inline-code">Область применения</span>. Если область оставить пустой, правило ищет подходящие строки по всей финальной смете.</li>
+        <li>Заполните <span class="inline-code">Новый код товара</span> и данные новой позиции.</li>
+        <li><span class="inline-code">Кол-во</span> для <span class="inline-code">replace</span> не вводите или оставьте справочным: бот сохранит количество из исходной строки сметы.</li>
+      </ul>
+      <p>Пример: старый автомат с кодом <span class="inline-code">OLD-001</span> нужно заменить на новый автомат <span class="inline-code">NEW-001</span>. В строке укажите <span class="inline-code">replace</span>, старый код, новый код, название, производителя, артикул, единицу измерения, цены и срок поставки.</p>
+
+      <h3>Действие delete: удалить позицию</h3>
+      <p>Используйте <span class="inline-code">delete</span>, когда позицию нужно убрать из финальной сметы.</p>
+      <ul class="wiki-plain-list">
+        <li>В <span class="inline-code">Действие</span> укажите <span class="inline-code">delete</span>.</li>
+        <li>В <span class="inline-code">Старый код товара</span> укажите код удаляемой позиции.</li>
+        <li>Если удаление нужно только в одном шкафу, укажите точное имя шкафа в <span class="inline-code">Область применения</span>.</li>
+        <li>Поля новой позиции можно оставить пустыми.</li>
+      </ul>
+      <p>Бот не применит удаление, если из-за него шкаф останется совсем без товарных строк и в этот шкаф не добавляется новая позиция.</p>
+
+      <h3>Действие add: добавить новую позицию</h3>
+      <p>Используйте <span class="inline-code">add</span>, когда нужно добавить новую строку в один шкаф или во все шкафы финальной сметы.</p>
+      <ul class="wiki-plain-list">
+        <li>В <span class="inline-code">Действие</span> укажите <span class="inline-code">add</span>.</li>
+        <li><span class="inline-code">Старый код товара</span> оставьте пустым.</li>
+        <li>В <span class="inline-code">Область применения</span> укажите <span class="inline-code">all</span> или точное имя одного шкафа.</li>
+        <li>Заполните <span class="inline-code">Новый код товара</span> и данные новой позиции.</li>
+        <li>В <span class="inline-code">Кол-во</span> обязательно укажите число больше нуля.</li>
+      </ul>
+      <p>Если указано <span class="inline-code">all</span>, позиция добавляется в каждый шкаф отдельно. Например, <span class="inline-code">add</span> для знака электробезопасности с количеством <span class="inline-code">1</span> и областью <span class="inline-code">all</span> добавит по одной штуке в каждый шкаф.</p>
+      <div class="notice"><strong>Ограничение:</strong> в <span class="inline-code">Область применения</span> сейчас поддерживается только <span class="inline-code">all</span> или одно точное имя шкафа. Список шкафов через запятую, точку с запятой или другой разделитель не поддерживается.</div>
+
+      <h3>Действие skip: пропустить строку</h3>
+      <p>Используйте <span class="inline-code">skip</span>, если хотите временно оставить строку в шаблоне, но не применять её.</p>
+      <ul class="wiki-plain-list">
+        <li>В <span class="inline-code">Действие</span> укажите <span class="inline-code">skip</span>.</li>
+        <li>Остальные поля можно не очищать: бот не применит эту строку.</li>
+      </ul>
+
+      <h3>Preview перед применением</h3>
+      <p>После загрузки файла замен бот сначала показывает preview и ничего не меняет в Excel автоматически. В preview видно:</p>
+      <ul class="wiki-plain-list">
+        <li>сколько правил найдено;</li>
+        <li>сколько правил активных и сколько пропущено;</li>
+        <li>сколько строк будет заменено, удалено и добавлено;</li>
+        <li>какие шкафы будут затронуты;</li>
+        <li>какие есть ошибки или конфликты;</li>
+        <li>есть ли дубли при добавлении новых позиций.</li>
+      </ul>
+      <p>Если preview содержит ошибки, кнопка применения не показывается. Исправьте файл замен и отправьте его повторно или нажмите <span class="inline-code">Отменить</span>.</p>
+
+      <h3>Что делать при дублях add</h3>
+      <p>Если новая позиция уже есть в одном или нескольких шкафах, бот не применяет правило молча. Он покажет конфликт и предложит выбор:</p>
+      <dl class="wiki-def-list">
+        <dt><span class="inline-code">Пропустить шкафы, где дубль уже есть</span></dt>
+        <dd>Бот добавит позицию только в шкафы без такого кода. Для шкафов с дублем в <span class="inline-code">Журнал замен</span> будет статус <span class="inline-code">skipped_duplicate</span>.</dd>
+        <dt><span class="inline-code">Добавить всё равно дублем</span></dt>
+        <dd>Бот добавит позицию даже туда, где такой код уже есть. Для таких строк в журнале будет статус <span class="inline-code">applied_duplicate</span>.</dd>
+        <dt><span class="inline-code">Отменить</span></dt>
+        <dd>Бот ничего не меняет и сбрасывает сценарий замены.</dd>
+      </dl>
+
+      <h3>После применения</h3>
+      <ul class="wiki-plain-list">
+        <li>Бот отправляет новый файл <span class="inline-code">final_result_replaced_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li>Исходный файл, от которого строилась замена, не изменяется.</li>
+        <li>Лист <span class="inline-code">Журнал замен</span> показывает, какие правила применились, какие были пропущены и какие строки обработаны как дубли.</li>
+        <li>Производные листы пересобираются по новой смете: <span class="inline-code">Итоги по шкафам</span>, <span class="inline-code">Сроки поставки</span>, <span class="inline-code">Аналитика производителей</span>, <span class="inline-code">Закупочная ведомость</span>.</li>
+        <li>Следующие действия в Telegram будут работать уже от нового файла, который бот только что отправил.</li>
+      </ul>
+    </section>
+
     <section class="wiki-doc" id="online-tkp">
-      <h2>6. Онлайн-ТКП</h2>
+      <h2>7. Онлайн-ТКП</h2>
       <dl class="wiki-def-list">
         <dt>Сформировать форму онлайн ТКП?</dt>
         <dd>Основная кнопка для создания Google Sheets ТКП по рабочему шаблону.</dd>
@@ -143,7 +308,7 @@
     </section>
 
     <section class="wiki-doc" id="admin-commands">
-      <h2>7. Admin-команды</h2>
+      <h2>8. Admin-команды</h2>
       <p>Эти команды доступны только администраторам. Обычный пользователь не получает административную информацию.</p>
       <dl class="wiki-def-list">
         <dt><span class="inline-code">/help</span></dt>
@@ -156,7 +321,7 @@
     </section>
 
     <section class="wiki-doc" id="install">
-      <h2>8. Установка на VPS</h2>
+      <h2>9. Установка на VPS</h2>
       <p>Для нового VPS в репозитории <span class="inline-code">RudlisMe/empr-smeta-bot</span> подготовлен guarded installer <span class="inline-code">deploy/install_new_vps.sh</span>. Скрипт рассчитан на запуск на новом сервере от root и сначала должен проверяться через <span class="inline-code">--dry-run</span>.</p>
       <ul class="wiki-plain-list">
         <li>Скрипт создаёт пользователя <span class="inline-code">emprbot</span>, рабочую папку <span class="inline-code">/opt/empr-smeta-bot</span>, <span class="inline-code">.venv</span> и systemd service <span class="inline-code">empr-smeta-bot.service</span>.</li>
@@ -176,7 +341,7 @@
     </section>
 
     <section class="wiki-doc" id="safe-editing">
-      <h2>9. Безопасные правки</h2>
+      <h2>10. Безопасные правки</h2>
       <h3>Можно</h3>
       <ul class="wiki-plain-list">
         <li>менять количество, цены, сроки поставки;</li>
@@ -195,7 +360,7 @@
     </section>
 
     <section class="wiki-doc" id="faq">
-      <h2>10. FAQ</h2>
+      <h2>11. FAQ</h2>
       <dl class="wiki-def-list">
         <dt>Бот не принимает файл</dt>
         <dd>Проверьте расширение и отправьте файл как документ.</dd>
@@ -203,6 +368,12 @@
         <dd>Проверьте повторяющиеся сметы по названию шкафа. Если дубли ожидаемые, продолжите обработку с дублями.</dd>
         <dt>Не появляется пересчёт</dt>
         <dd>Убедитесь, что отправлен готовый final_result со структурой листов бота.</dd>
+        <dt>Нет кнопок "Сформировать шаблон замен" и "Заменить позиции"</dt>
+        <dd>Эти кнопки появляются только после загрузки валидного <span class="inline-code">final_result.xlsx</span> или после формирования финальной сметы ботом.</dd>
+        <dt>После ошибки в файле замен можно отправить исправленный файл повторно?</dt>
+        <dd>Да. Если preview показал ошибки, исправьте Excel-файл замен и отправьте его снова. Нажимать <span class="inline-code">Заменить позиции</span> повторно не нужно.</dd>
+        <dt>Можно добавить позицию сразу в несколько выбранных шкафов?</dt>
+        <dd>Сейчас поддерживается <span class="inline-code">all</span> или одно точное имя шкафа. Несколько шкафов через запятую не поддерживаются.</dd>
         <dt>Нет кнопки онлайн-ТКП</dt>
         <dd>Сначала сформируйте final_result или отправьте ранее сформированный final_result боту повторно.</dd>
         <dt>Нет кнопки v2</dt>

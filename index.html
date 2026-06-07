@@ -39,12 +39,13 @@
       <ul class="wiki-index-list">
         <li>
           <a href="bot.html"><strong>@EMPR_smetaBot</strong></a>
-          <p>Работа со сметами через Telegram: загрузка Excel/ZIP, получение <span class="inline-code">final_result</span>, пересчёт готового файла и создание онлайн-ТКП.</p>
+          <p>Работа со сметами через Telegram: загрузка Excel/ZIP, получение <span class="inline-code">final_result</span>, пересчёт готового файла, замена позиций и создание онлайн-ТКП.</p>
           <ul>
             <li><a href="bot.html#quick-start">Быстрый старт</a></li>
             <li><a href="bot.html#result-file">Что внутри final_result</a></li>
             <li><a href="bot.html#invalid-prices">Контроль проблемных сумм</a></li>
             <li><a href="bot.html#recalculate">Пересчёт после ручных правок</a></li>
+            <li><a href="bot.html#replacement-flow">Замена позиций из final_result</a></li>
             <li><a href="bot.html#online-tkp">Онлайн-ТКП v1/v2</a></li>
             <li><a href="bot.html#admin-commands">Admin-команды</a></li>
             <li><a href="bot.html#safe-editing">Безопасные правки в Excel</a></li>
@@ -76,6 +77,7 @@
         <li>Формирует <span class="inline-code">final_result_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
         <li>Распознаёт уже готовый <span class="inline-code">final_result</span> по структуре книги, а не только по имени файла.</li>
         <li>Предлагает пересчитать финальную смету после ручных правок на листе <span class="inline-code">Сметы</span>.</li>
+        <li>Позволяет заменить, удалить или добавить позиции из готового <span class="inline-code">final_result</span> через шаблон с листом <span class="inline-code">Замены</span>.</li>
         <li>Создаёт онлайн-ТКП в Google Sheets из нового, пересчитанного или повторно загруженного final_result.</li>
         <li>При сбое Google Sheets сохраняет безопасное сообщение и отправляет локальный final_result, если он уже доступен.</li>
         <li>Показывает таблицу <span class="inline-code">Позиции без указания корректной стоимости</span>, если в <span class="inline-code">Сметы!J/K</span> есть пустые, нулевые или текстовые суммы.</li>
