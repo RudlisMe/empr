@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Подробная инструкция EMPR Automation: как пользоваться Telegram-ботом, final_result, заменами, онлайн-ТКП, реестром НКУ и генерацией паспортов." />
+  <meta name="description" content="Подробная инструкция EMPR Automation: как пользоваться Telegram-ботом, final_result, заменами, онлайн-ТКП, реестром НКУ, паспортами и упаковочными листами." />
   <title>Как пользоваться EMPR Automation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
     <header class="wiki-page-header">
       <p class="wiki-breadcrumb"><a href="index.html">Главная</a> / Инструкция</p>
       <h1>Как пользоваться EMPR Automation</h1>
-      <p>Пошаговая инструкция для рабочих сценариев: загрузить сметы в Telegram-бот, получить итоговый Excel, пересчитать его после ручных правок, заменить позиции, создать онлайн-ТКП, заполнить реестр НКУ и сгенерировать паспорта.</p>
+      <p>Пошаговая инструкция для рабочих сценариев: загрузить сметы в Telegram-бот, получить итоговый Excel, пересчитать его после ручных правок, заменить позиции, создать онлайн-ТКП, заполнить реестр НКУ, сгенерировать паспорта и сформировать упаковочные листы.</p>
       <p>Если нужно быстро начать, используйте сценарии по порядку сверху вниз. Если уже есть готовый файл, переходите сразу к нужному разделу.</p>
     </header>
 
@@ -34,6 +34,7 @@
         <li><a href="#replacement">Заменить, удалить или добавить позиции</a></li>
         <li><a href="#nku-registry">Заполнить реестр НКУ</a></li>
         <li><a href="#nku-passports">Сгенерировать паспорта НКУ</a></li>
+        <li><a href="#nku-packing-list">Сформировать упаковочный лист НКУ</a></li>
         <li><a href="#what-to-check">Что проверить перед отправкой результата</a></li>
         <li><a href="#common-errors">Частые ошибки</a></li>
       </ol>
@@ -43,6 +44,7 @@
       <h2>1. Перед началом</h2>
       <ul class="wiki-plain-list">
         <li>Для смет используйте Telegram-бот <a href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener"><span class="inline-code">@EMPR_smetaBot</span></a>.</li>
+        <li>Для реестра НКУ, паспортов НКУ и упаковочных листов через Telegram используйте <a href="https://t.me/nku_registry_bot" target="_blank" rel="noopener"><span class="inline-code">@nku_registry_bot</span></a>.</li>
         <li>Файлы отправляйте в Telegram именно как <strong>документ</strong>, а не как изображение или предпросмотр.</li>
         <li>Для обработки смет подходят <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архивы с Excel-файлами.</li>
         <li>Для НКУ-скриптов скачайте нужные файлы на странице <a href="files.html">Файлы</a> и держите файл запуска рядом с Python-скриптом.</li>
@@ -181,8 +183,58 @@
       </ul>
     </section>
 
+    <section class="wiki-doc" id="nku-packing-list">
+      <h2>8. Сформировать упаковочный лист НКУ через Telegram</h2>
+      <p>Упаковочные листы формируются в <span class="inline-code">@nku_registry_bot</span>. Бот может взять данные из строк реестра или из уже готового <span class="inline-code">.docx</span> паспорта. На выходе приходит файл <span class="inline-code">.xlsx</span>; если файлов много, бот может отправить ZIP.</p>
+
+      <h3>Вариант A: упаковочный лист по строкам реестра</h3>
+      <ol class="flow-list">
+        <li><strong>Откройте <span class="inline-code">@nku_registry_bot</span>.</strong> Если сессии нет, отправьте <span class="inline-code">/start</span>.</li>
+        <li><strong>Откройте рабочий реестр.</strong> Если основная ссылка уже сохранена, отправьте <span class="inline-code">/link</span>. Если бот просит ссылку, вставьте ссылку на Google Таблицу реестра.</li>
+        <li><strong>В главном меню нажмите <span class="inline-code">📦 Сгенерировать Упаковочный лист</span>.</strong> Бот покажет последнюю строку реестра и предложит варианты.</li>
+        <li><strong>Выберите последние 5 строк или введите строки вручную.</strong> Для последних 5 строк нажмите кнопку <span class="inline-code">1️⃣ Последние 5 строк</span>. Для ручного выбора отправьте текстом номера строк.</li>
+        <li><strong>Дождитесь генерации.</strong> Бот прочитает данные из Google Sheets без записи в реестр и сформирует упаковочные листы.</li>
+        <li><strong>Скачайте результат.</strong> Для одной или нескольких строк придут файлы <span class="inline-code">Packing_list_...xlsx</span>; если файлов больше пяти, придёт архив <span class="inline-code">packing_lists.zip</span>.</li>
+      </ol>
+
+      <h3>Что вводить при выборе строк</h3>
+      <ul class="wiki-plain-list">
+        <li>Одна строка: <span class="inline-code">5</span>.</li>
+        <li>Диапазон: <span class="inline-code">5-10</span>.</li>
+        <li>Список строк: <span class="inline-code">5,7,9</span>.</li>
+        <li>Смешанный ввод: <span class="inline-code">5,7-9,12</span>.</li>
+        <li>Лимит за один запрос: до <span class="inline-code">50</span> строк.</li>
+      </ul>
+
+      <h3>Вариант B: упаковочный лист из готового DOCX-паспорта</h3>
+      <ol class="flow-list">
+        <li><strong>Откройте режим упаковочных листов.</strong> В <span class="inline-code">@nku_registry_bot</span> нажмите <span class="inline-code">📦 Сгенерировать Упаковочный лист</span>.</li>
+        <li><strong>Отправьте паспорт как документ.</strong> Прикрепите ранее созданный файл <span class="inline-code">.docx</span> паспорта.</li>
+        <li><strong>Дождитесь извлечения данных.</strong> Бот возьмёт из паспорта номер заказа, тип изделия, заводской номер и габариты.</li>
+        <li><strong>Получите <span class="inline-code">.xlsx</span>.</strong> Бот сформирует один упаковочный лист по данным паспорта.</li>
+      </ol>
+      <div class="notice"><strong>Важно:</strong> если отправить не <span class="inline-code">.docx</span>, бот попросит загрузить именно DOCX-паспорт или ввести номера строк.</div>
+
+      <h3>Вариант C: сразу после добавления строки в реестр</h3>
+      <ol class="flow-list">
+        <li><strong>Добавьте строку в реестр через <span class="inline-code">@nku_registry_bot</span>.</strong> После успешной записи бот покажет post-record меню.</li>
+        <li><strong>Нажмите <span class="inline-code">📄📦 Сгенерировать паспорт и упаковочный лист этой строки</span>.</strong> Эта кнопка работает только с только что добавленной строкой.</li>
+        <li><strong>Дождитесь двух файлов.</strong> Сначала бот отправит паспорт, затем упаковочный лист.</li>
+        <li><strong>Проверьте, что файлы относятся к нужной строке.</strong> Бот использует строго номер последней добавленной строки: паспорт генерируется по <span class="inline-code">row-row</span>, упаковочный лист — по <span class="inline-code">[row]</span>.</li>
+      </ol>
+
+      <h3>Какие данные попадают в упаковочный лист</h3>
+      <ul class="wiki-plain-list">
+        <li><span class="inline-code">Номер заказа</span>;</li>
+        <li><span class="inline-code">Тип изделия</span>;</li>
+        <li><span class="inline-code">Зав.№</span>;</li>
+        <li><span class="inline-code">Габаритный размер, ВхШхГ, мм</span>.</li>
+      </ul>
+      <p>Если упаковочный лист строится из строк реестра, имя файла включает номер строки, номер заказа и заводской номер. Если файл с таким именем уже есть, бот добавит безопасный суффикс вроде <span class="inline-code">_2</span> или <span class="inline-code">_3</span>, чтобы не перезаписать старый результат.</p>
+    </section>
+
     <section class="wiki-doc" id="what-to-check">
-      <h2>8. Что проверить перед отправкой результата</h2>
+      <h2>9. Что проверить перед отправкой результата</h2>
       <ul class="wiki-plain-list">
         <li>В <span class="inline-code">final_result</span> есть лист <span class="inline-code">Сметы</span> и производные листы.</li>
         <li>На листе <span class="inline-code">Итоги по шкафам</span> нет неожиданных проблемных сумм.</li>
@@ -190,12 +242,13 @@
         <li>После замен есть лист <span class="inline-code">Журнал замен</span>, и в нём нет неожиданных пропусков.</li>
         <li>Онлайн-ТКП открывается и содержит актуальные данные.</li>
         <li>Паспорта НКУ созданы по правильным строкам реестра.</li>
+        <li>Упаковочные листы НКУ созданы по правильным строкам или по правильному DOCX-паспорту.</li>
         <li>В реестр НКУ добавлена именно одна новая строка, если вы запускали сценарий заполнения.</li>
       </ul>
     </section>
 
     <section class="wiki-doc" id="common-errors">
-      <h2>9. Частые ошибки</h2>
+      <h2>10. Частые ошибки</h2>
       <dl class="wiki-def-list">
         <dt>Файл не обрабатывается в Telegram</dt>
         <dd>Проверьте, что файл отправлен как документ и имеет расширение <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> или <span class="inline-code">.zip</span>.</dd>
@@ -207,6 +260,10 @@
         <dd>Сохраните присланный ботом Excel и повторите создание позже. Если проблема повторяется, передайте безопасное описание ошибки без токенов и ссылок с секретами.</dd>
         <dt>Скрипт НКУ не видит Google Таблицу</dt>
         <dd>Проверьте, что таблица расшарена на service account и в ссылке указан правильный <span class="inline-code">gid</span>.</dd>
+        <dt>Не получается сформировать упаковочный лист</dt>
+        <dd>Проверьте, что открыт <span class="inline-code">@nku_registry_bot</span>, выбран пункт <span class="inline-code">📦 Сгенерировать Упаковочный лист</span>, а строки введены в формате <span class="inline-code">5</span>, <span class="inline-code">5-10</span> или <span class="inline-code">5,7-9</span>.</dd>
+        <dt>Бот не принимает паспорт для упаковочного листа</dt>
+        <dd>Паспорт нужно отправлять как документ с расширением <span class="inline-code">.docx</span>. PDF, изображения и другие форматы не подходят.</dd>
         <dt>На macOS файл .command не запускается</dt>
         <dd>Выдайте права <span class="inline-code">chmod +x</span> и при необходимости снимите quarantine-метку <span class="inline-code">xattr -d com.apple.quarantine</span>. Команды есть на страницах <a href="registry.html#launch-files">Реестр</a> и <a href="passports.html#launch-files">Паспорта</a>.</dd>
       </dl>
