@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Подробная инструкция EMPR Automation: как пользоваться Telegram-ботом, final_result, заменами, онлайн-ТКП, реестром НКУ и генерацией паспортов." />
+  <title>Как пользоваться EMPR Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">⚡</span><span><strong>EMPR Wiki</strong><small>Инструкция</small></span></a>
+    <nav class="topnav"><a href="index.html">Главная</a><a class="active" href="usage.html">Инструкция</a><a href="passports.html">Паспорта</a><a href="registry.html">Реестр</a><a href="bot.html">Telegram-бот</a><a href="prompts.html">Промты</a><a href="files.html">Файлы</a></nav>
+    <button class="theme-toggle" type="button" id="themeToggle">☀ / ☾</button>
+  </header>
+
+  <main class="layout wiki-page">
+    <header class="wiki-page-header">
+      <p class="wiki-breadcrumb"><a href="index.html">Главная</a> / Инструкция</p>
+      <h1>Как пользоваться EMPR Automation</h1>
+      <p>Пошаговая инструкция для рабочих сценариев: загрузить сметы в Telegram-бот, получить итоговый Excel, пересчитать его после ручных правок, заменить позиции, создать онлайн-ТКП, заполнить реестр НКУ и сгенерировать паспорта.</p>
+      <p>Если нужно быстро начать, используйте сценарии по порядку сверху вниз. Если уже есть готовый файл, переходите сразу к нужному разделу.</p>
+    </header>
+
+    <nav class="wiki-doc wiki-toc" aria-label="Оглавление">
+      <h2>Оглавление</h2>
+      <ol>
+        <li><a href="#before-start">Перед началом</a></li>
+        <li><a href="#telegram-final-result">Получить final_result через Telegram</a></li>
+        <li><a href="#online-tkp">Создать онлайн-ТКП</a></li>
+        <li><a href="#recalculate">Пересчитать после ручных правок</a></li>
+        <li><a href="#replacement">Заменить, удалить или добавить позиции</a></li>
+        <li><a href="#nku-registry">Заполнить реестр НКУ</a></li>
+        <li><a href="#nku-passports">Сгенерировать паспорта НКУ</a></li>
+        <li><a href="#what-to-check">Что проверить перед отправкой результата</a></li>
+        <li><a href="#common-errors">Частые ошибки</a></li>
+      </ol>
+    </nav>
+
+    <section class="wiki-doc" id="before-start">
+      <h2>1. Перед началом</h2>
+      <ul class="wiki-plain-list">
+        <li>Для смет используйте Telegram-бот <a href="https://t.me/EMPR_smetaBot" target="_blank" rel="noopener"><span class="inline-code">@EMPR_smetaBot</span></a>.</li>
+        <li>Файлы отправляйте в Telegram именно как <strong>документ</strong>, а не как изображение или предпросмотр.</li>
+        <li>Для обработки смет подходят <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> и ZIP-архивы с Excel-файлами.</li>
+        <li>Для НКУ-скриптов скачайте нужные файлы на странице <a href="files.html">Файлы</a> и держите файл запуска рядом с Python-скриптом.</li>
+        <li>Не отправляйте и не публикуйте <span class="inline-code">.env</span>, <span class="inline-code">google_service_account.json</span>, Telegram token, OAuth token или приватные ключи.</li>
+      </ul>
+      <div class="notice"><strong>Главное правило:</strong> если бот прислал новый файл, дальше работайте именно с ним. Старый файл остаётся как резервная копия, но следующие действия лучше делать от последнего результата.</div>
+    </section>
+
+    <section class="wiki-doc" id="telegram-final-result">
+      <h2>2. Получить final_result через Telegram</h2>
+      <p>Этот сценарий используется, когда есть одна или несколько исходных смет и нужно получить итоговый Excel.</p>
+      <ol class="flow-list">
+        <li><strong>Откройте Telegram-бота.</strong> Перейдите в <span class="inline-code">@EMPR_smetaBot</span> и нажмите <span class="inline-code">/start</span>.</li>
+        <li><strong>Отправьте исходные сметы.</strong> Прикрепите один Excel-файл или ZIP-архив с несколькими Excel-файлами. Отправляйте как документ.</li>
+        <li><strong>Дождитесь обработки.</strong> Бот прочитает файлы, соберёт позиции по шкафам, посчитает итоги и сформирует итоговый файл.</li>
+        <li><strong>Скачайте результат.</strong> В Telegram придёт файл вида <span class="inline-code">final_result_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li><strong>Проверьте сообщение бота.</strong> Бот показывает краткую сводку и дальнейшие кнопки: онлайн-ТКП, пересчёт, шаблон замен или другие доступные действия.</li>
+        <li><strong>Откройте Excel.</strong> Проверьте лист <span class="inline-code">Сметы</span>, затем производные листы: <span class="inline-code">Итоги по шкафам</span>, <span class="inline-code">Сроки поставки</span>, <span class="inline-code">Аналитика производителей</span>, <span class="inline-code">Закупочная ведомость</span>.</li>
+      </ol>
+      <h3>Что вводить пользователю</h3>
+      <ul class="wiki-plain-list">
+        <li>Для старта: <span class="inline-code">/start</span>.</li>
+        <li>Дальше обычно ничего писать не нужно: отправьте файл документом и нажимайте кнопки, которые предлагает бот.</li>
+        <li>Если бот просит подтвердить обработку дублей, выберите кнопку в Telegram. Если дубли не ожидаются, сначала проверьте исходные файлы.</li>
+      </ul>
+    </section>
+
+    <section class="wiki-doc" id="online-tkp">
+      <h2>3. Создать онлайн-ТКП</h2>
+      <p>Онлайн-ТКП создаётся из готового <span class="inline-code">final_result</span> в Google Sheets.</p>
+      <ol class="flow-list">
+        <li><strong>Получите final_result.</strong> Сначала выполните сценарий из раздела 2 или отправьте боту уже готовый <span class="inline-code">final_result.xlsx</span>.</li>
+        <li><strong>Нажмите кнопку онлайн-ТКП.</strong> Используйте кнопку <span class="inline-code">Сформировать форму онлайн ТКП?</span>.</li>
+        <li><strong>Дождитесь ссылки.</strong> Бот создаст Google Sheets форму и отправит preview или ссылку на созданную таблицу.</li>
+        <li><strong>Проверьте таблицу.</strong> Откройте ссылку и убедитесь, что позиции, цены и итоговые суммы перенесены корректно.</li>
+        <li><strong>Если создание не удалось.</strong> Бот может всё равно отправить локальный <span class="inline-code">final_result</span>. В таком случае повторите онлайн-ТКП позже от этого же файла.</li>
+      </ol>
+      <div class="notice"><strong>Кнопка v2:</strong> <span class="inline-code">Сформировать онлайн ТКП v2</span> видна только когда тестовый режим включён администратором. Если её нет, используйте основную кнопку.</div>
+    </section>
+
+    <section class="wiki-doc" id="recalculate">
+      <h2>4. Пересчитать final_result после ручных правок</h2>
+      <p>Этот сценарий нужен, если вы вручную поправили цены, количество, сроки или позиции на листе <span class="inline-code">Сметы</span>.</p>
+      <ol class="flow-list">
+        <li><strong>Откройте final_result в Excel.</strong> Работайте с листом <span class="inline-code">Сметы</span>.</li>
+        <li><strong>Внесите правки.</strong> Можно менять количество, цены, срок поставки, производителя, артикул, код товара и название позиции.</li>
+        <li><strong>Не ломайте структуру.</strong> Не переименовывайте лист <span class="inline-code">Сметы</span>, не удаляйте строки <span class="inline-code">Всего</span> и <span class="inline-code">Примечание:</span>, не переносите товары вне блока шкафа.</li>
+        <li><strong>Сохраните файл.</strong> Закройте Excel или убедитесь, что файл сохранён.</li>
+        <li><strong>Отправьте final_result боту.</strong> Отправьте изменённый файл в <span class="inline-code">@EMPR_smetaBot</span> как документ.</li>
+        <li><strong>Нажмите пересчёт.</strong> Когда бот распознает файл как готовый итоговый файл, нажмите <span class="inline-code">Пересчитать финальную смету</span>.</li>
+        <li><strong>Получите новый final_result.</strong> Бот пересоздаст производные листы по актуальному листу <span class="inline-code">Сметы</span>.</li>
+      </ol>
+      <h3>Что бот пересобирает</h3>
+      <ul class="wiki-plain-list">
+        <li><span class="inline-code">Итоги по шкафам</span>;</li>
+        <li><span class="inline-code">Сроки поставки</span>;</li>
+        <li><span class="inline-code">Аналитика производителей</span>;</li>
+        <li><span class="inline-code">Закупочная ведомость</span>;</li>
+        <li>таблицу <span class="inline-code">Позиции без указания корректной стоимости</span>, если есть пустые, нулевые или текстовые суммы.</li>
+      </ul>
+    </section>
+
+    <section class="wiki-doc" id="replacement">
+      <h2>5. Заменить, удалить или добавить позиции</h2>
+      <p>Этот сценарий удобен, когда нужно массово обновить готовый <span class="inline-code">final_result</span> без ручной правки каждой строки.</p>
+      <ol class="flow-list">
+        <li><strong>Отправьте final_result боту.</strong> Можно использовать только что созданный файл или ранее сохранённый итоговый файл.</li>
+        <li><strong>Нажмите <span class="inline-code">Сформировать шаблон замен</span>.</strong> Бот пришлёт файл <span class="inline-code">replacement_template_YYYY-MM-DD_HH-MM-SS.xlsx</span>.</li>
+        <li><strong>Откройте шаблон.</strong> В нём есть листы <span class="inline-code">Замены</span>, <span class="inline-code">Позиции сметы</span> и <span class="inline-code">Инструкция</span>.</li>
+        <li><strong>Заполните лист <span class="inline-code">Замены</span>.</strong> В колонке <span class="inline-code">Действие</span> укажите <span class="inline-code">replace</span>, <span class="inline-code">delete</span>, <span class="inline-code">add</span> или <span class="inline-code">skip</span>.</li>
+        <li><strong>Вернитесь в Telegram.</strong> Нажмите <span class="inline-code">Заменить позиции</span> и отправьте заполненный шаблон замен как документ.</li>
+        <li><strong>Проверьте preview.</strong> Бот покажет, сколько правил найдено, какие шкафы затронуты, какие строки будут заменены, удалены или добавлены.</li>
+        <li><strong>Исправьте ошибки, если они есть.</strong> Если preview показывает ошибки, исправьте шаблон и отправьте его повторно.</li>
+        <li><strong>Подтвердите применение.</strong> Если ошибок нет, нажмите <span class="inline-code">Применить</span>. При дублях выберите, пропускать шкафы с дублями или добавлять всё равно.</li>
+        <li><strong>Получите новый файл.</strong> Бот пришлёт <span class="inline-code">final_result_replaced_YYYY-MM-DD_HH-MM-SS.xlsx</span>. Исходный файл не меняется.</li>
+      </ol>
+      <h3>Что вводить в колонку "Действие"</h3>
+      <div class="table-wrap compact-table">
+        <table>
+          <thead>
+            <tr><th>Действие</th><th>Когда использовать</th><th>Что заполнить</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="inline-code">replace</span></td><td>Заменить существующую позицию на новую.</td><td>Старый код товара, новый код товара, имя товара, производителя, артикул, единицу, цены и срок.</td></tr>
+            <tr><td><span class="inline-code">delete</span></td><td>Удалить позицию из одного шкафа или из всей сметы.</td><td>Старый код товара. При необходимости точное имя шкафа в области применения.</td></tr>
+            <tr><td><span class="inline-code">add</span></td><td>Добавить новую позицию в один шкаф или во все шкафы.</td><td>Область применения: <span class="inline-code">all</span> или точное имя шкафа, новый код, данные позиции и количество.</td></tr>
+            <tr><td><span class="inline-code">skip</span></td><td>Временно оставить строку в шаблоне, но не применять её.</td><td>Остальные поля можно не очищать.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notice"><strong>Область применения:</strong> для <span class="inline-code">add</span> укажите <span class="inline-code">all</span> или точное имя одного шкафа. Несколько шкафов через запятую сейчас не поддерживаются.</div>
+    </section>
+
+    <section class="wiki-doc" id="nku-registry">
+      <h2>6. Заполнить реестр НКУ</h2>
+      <p>Реестр можно заполнять через локальный скрипт <span class="inline-code">fill_registry_nku_Onln_v9.py</span>. Он пошагово спрашивает параметры и записывает строку в Google Таблицу или локальный Excel.</p>
+      <ol class="flow-list">
+        <li><strong>Подготовьте папку.</strong> Положите рядом <span class="inline-code">fill_registry_nku_Onln_v9.py</span>, файл запуска для вашей ОС и, для онлайн-режима, <span class="inline-code">google_service_account.json</span>.</li>
+        <li><strong>Запустите файл запуска.</strong> На macOS используйте <span class="inline-code">run_fill_registry_nku_interactive_Onln_macOS.command</span>, на Windows — <span class="inline-code">run_fill_registry_nku_interactive_Onln_Windows.bat</span>.</li>
+        <li><strong>Выберите режим.</strong> Для Google Таблицы используйте онлайн-режим и вставьте ссылку на таблицу. Для локального Excel оставьте рядом один нужный <span class="inline-code">.xlsx</span>.</li>
+        <li><strong>Выбирайте пункты меню цифрами.</strong> Скрипт спрашивает конструктивное исполнение, класс, группу, серию, ток, напряжение и климатическое исполнение.</li>
+        <li><strong>Введите данные заказа.</strong> После формирования типа изделия введите номер заказа, IP, габаритный размер и вес.</li>
+        <li><strong>Проверьте итог.</strong> Скрипт покажет собранные данные перед записью.</li>
+        <li><strong>Подтвердите сохранение.</strong> После подтверждения строка будет добавлена в реестр.</li>
+      </ol>
+      <h3>Что можно вводить во время работы</h3>
+      <ul class="wiki-plain-list">
+        <li><span class="inline-code">Enter</span> — принять значение по умолчанию, если оно показано в квадратных скобках.</li>
+        <li>Цифра меню — выбрать пункт из списка.</li>
+        <li><span class="inline-code">back</span>, <span class="inline-code">b</span>, <span class="inline-code">назад</span> — вернуться на предыдущий шаг до сохранения строки.</li>
+        <li><span class="inline-code">q</span>, <span class="inline-code">quit</span>, <span class="inline-code">exit</span> — выйти из скрипта.</li>
+        <li><span class="inline-code">help</span>, <span class="inline-code">h</span>, <span class="inline-code">?</span> — показать подсказку.</li>
+      </ul>
+    </section>
+
+    <section class="wiki-doc" id="nku-passports">
+      <h2>7. Сгенерировать паспорта НКУ</h2>
+      <p>Паспорта создаются скриптом <span class="inline-code">generate_passports_v7_Onln.py</span> из данных реестра и шаблона <span class="inline-code">passport_template_v2.docx</span>.</p>
+      <ol class="flow-list">
+        <li><strong>Подготовьте папку.</strong> Положите рядом <span class="inline-code">generate_passports_v7_Onln.py</span>, <span class="inline-code">passport_template_v2.docx</span>, файл запуска для вашей ОС и, для онлайн-режима, <span class="inline-code">google_service_account.json</span>.</li>
+        <li><strong>Запустите файл запуска.</strong> На macOS используйте <span class="inline-code">run_generate_passports_interactive_Onln_macOS_auto_venv.command</span>, на Windows — <span class="inline-code">run_generate_passports_interactive_Onln_Windows.bat</span>.</li>
+        <li><strong>Выберите источник данных.</strong> Для Google Таблицы вставьте ссылку с нужным <span class="inline-code">gid</span>. Для локального Excel запустите без ссылки и держите нужный Excel рядом со скриптом.</li>
+        <li><strong>Укажите диапазон строк.</strong> Введите начальную и конечную строку или следуйте подсказкам интерактивного запуска.</li>
+        <li><strong>Дождитесь генерации.</strong> Скрипт заменит метки в Word-шаблоне и создаст документы.</li>
+        <li><strong>Заберите результат.</strong> Готовые паспорта сохраняются в папку <span class="inline-code">Gotovye_pasporta</span>.</li>
+      </ol>
+      <h3>Какие данные берутся из реестра</h3>
+      <ul class="wiki-plain-list">
+        <li>номер заказа;</li>
+        <li>тип изделия;</li>
+        <li>заводской номер;</li>
+        <li>IP;</li>
+        <li>ток и напряжение;</li>
+        <li>габаритный размер;</li>
+        <li>вес.</li>
+      </ul>
+    </section>
+
+    <section class="wiki-doc" id="what-to-check">
+      <h2>8. Что проверить перед отправкой результата</h2>
+      <ul class="wiki-plain-list">
+        <li>В <span class="inline-code">final_result</span> есть лист <span class="inline-code">Сметы</span> и производные листы.</li>
+        <li>На листе <span class="inline-code">Итоги по шкафам</span> нет неожиданных проблемных сумм.</li>
+        <li>В <span class="inline-code">Закупочной ведомости</span> одинаковые позиции объединены корректно.</li>
+        <li>После замен есть лист <span class="inline-code">Журнал замен</span>, и в нём нет неожиданных пропусков.</li>
+        <li>Онлайн-ТКП открывается и содержит актуальные данные.</li>
+        <li>Паспорта НКУ созданы по правильным строкам реестра.</li>
+        <li>В реестр НКУ добавлена именно одна новая строка, если вы запускали сценарий заполнения.</li>
+      </ul>
+    </section>
+
+    <section class="wiki-doc" id="common-errors">
+      <h2>9. Частые ошибки</h2>
+      <dl class="wiki-def-list">
+        <dt>Файл не обрабатывается в Telegram</dt>
+        <dd>Проверьте, что файл отправлен как документ и имеет расширение <span class="inline-code">.xls</span>, <span class="inline-code">.xlsx</span>, <span class="inline-code">.xlsm</span> или <span class="inline-code">.zip</span>.</dd>
+        <dt>Не появляется кнопка пересчёта</dt>
+        <dd>Бот должен распознать файл как <span class="inline-code">final_result</span>. Убедитесь, что структура листов не сломана.</dd>
+        <dt>Preview замен показывает ошибки</dt>
+        <dd>Исправьте лист <span class="inline-code">Замены</span> и отправьте тот же шаблон повторно. Повторно нажимать <span class="inline-code">Заменить позиции</span> обычно не нужно.</dd>
+        <dt>Не создаётся онлайн-ТКП</dt>
+        <dd>Сохраните присланный ботом Excel и повторите создание позже. Если проблема повторяется, передайте безопасное описание ошибки без токенов и ссылок с секретами.</dd>
+        <dt>Скрипт НКУ не видит Google Таблицу</dt>
+        <dd>Проверьте, что таблица расшарена на service account и в ссылке указан правильный <span class="inline-code">gid</span>.</dd>
+        <dt>На macOS файл .command не запускается</dt>
+        <dd>Выдайте права <span class="inline-code">chmod +x</span> и при необходимости снимите quarantine-метку <span class="inline-code">xattr -d com.apple.quarantine</span>. Команды есть на страницах <a href="registry.html#launch-files">Реестр</a> и <a href="passports.html#launch-files">Паспорта</a>.</dd>
+      </dl>
+    </section>
+
+    <footer class="footer">2026 I.C.</footer>
+  </main>
+  <div class="toast" id="toast">Команда скопирована</div>
+  <script src="script.js"></script>
+</body>
+</html>

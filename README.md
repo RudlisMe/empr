@@ -7,4 +7,5 @@
 - установка `@EMPR_smetaBot` на новый VPS через guarded installer `deploy/install_new_vps.sh`.
 
 Главная страница: `index.html`.
+Подробная инструкция по применению функционала: `usage.html`.
 Страница бота: `bot.html`.
